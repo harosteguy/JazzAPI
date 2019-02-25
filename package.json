@@ -1,0 +1,26 @@
+{
+  "name": "jazzapi",
+  "version": "1.0.0",
+  "description": "JazzAPIs es un grupo de APIs RESTful desarrolladas en Node.js para servir y manejar contenidos de aplicaciones.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/perrosucio/JazzAPI.git"
+  },
+  "author": "Guillermo Harosteguy",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/perrosucio/JazzAPI/issues"
+  },
+  "homepage": "https://github.com/perrosucio/JazzAPI#readme",
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "mysql": "^2.16.0",
+    "nodemailer": "^5.1.1",
+    "sanitize-html": "^1.20.0",
+    "web-push": "^3.3.3"
+  }
+}

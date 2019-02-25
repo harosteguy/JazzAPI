@@ -1,0 +1,78 @@
+
+-------------------------------------------------------------------------------------------------------------------------------------
+Notificaciones
+
+-- Suscribe usuario
+
+curl -X POST 'https://dominio.con/apis/notificaciones/v1/' -d '{"endpoint": "https://fcm.googleapis.com/fcm/send/aaaaaaaaaaaaaaA91bHqjZxM0VImWWqDRN7U0a3AzpqUf4O-byuxb_wJsKRaKvV_iKw56s16ewwwwwwwwwwwwwwwwwwwwHPxVTgqLunFeVeB9lLCQZyohyAztTH8ZQL9WCxKpA6dvTG_Tbbbbbbb_n",
+"p256dh": "aaaaaaaaaaaaaaaaaaEuXJ4BL_YBVQ0ttttttttuuuuuiopppppppzgggff9d7_Mcccccccccmmmmmmm3qfpk=", "auth": "aaaaaaaaa3meo-8AsdfwA==", "idioma": "en", "urlPagina": "https://algo.com"}'
+
+-------------------------------------------------------------------------------------------------------------------------------------
+WM-Notificaciones
+
+-- Lista suscriptores
+
+curl -u 3:5926f7b5b29dc692513558b176d2d982 https://dominio.con/apis/wm-notificaciones/v1/suscriptores
+
+-- Envía mensajes
+
+curl -u 3:97863ebed563f5d80d144a33a1d6d799 -X POST https://dominio.con/apis/wm-notificaciones/v1/mensajes
+
+
+		...
+
+
+{
+	"statusCode":201,
+	"body":"",
+	"headers":{
+		"content-type":"text/plain",
+		"location":"https://android.googleapis.com/gcm/0:1541307953070598%0f493ae6f9fd7ecd",
+		"date":"Sun, 04 Nov 2018 05:05:53 GMT",
+		"expires":"Sun, 04 Nov 2018 05:05:53 GMT",
+		"cache-control":"private, max-age=0",
+		"x-content-type-options":"nosniff",
+		"x-frame-options":"SAMEORIGIN",
+		"x-xss-protection":"1; mode=block",
+		"content-length":"0",
+		"server":"GSE",
+		"alt-svc":"quic=\":443\"; ma=2592000; v=\"44,43,39,35\"",
+		"connection":"close"
+	}
+}
+
+{
+	"name":"WebPushError",
+	"message":"Received unexpected response code",
+	"statusCode":410,
+	"headers":{
+		"content-type":"text/html; charset=UTF-8",
+		"date":"Mon, 05 Nov 2018 10:12:04 GMT",
+		"expires":"Mon, 05 Nov 2018 10:12:04 GMT",
+		"cache-control":"private, max-age=0",
+		"x-content-type-options":"nosniff",
+		"x-frame-options":"SAMEORIGIN",
+		"x-xss-protection":"1; mode=block",
+		"server":"GSE",
+		"alt-svc":"quic=\":443\"; ma=2592000; v=\"44,43,39,35\"",
+		"accept-ranges":"none",
+		"vary":"Accept-Encoding",
+		"connection":"close"
+	},
+	"body":"<HTML>\n<HEAD>\n<TITLE>NotRegistered</TITLE>\n</HEAD>\n<BODY BGCOLOR=\"#FFFFFF\" TEXT=\"#000000\">\n<H1>NotRegistered</H1>\n<H2>Error 410</H2>\n</BODY>\n</HTML>\n",
+	"endpoint":"https://android.googleapis.com/gcm/send/e1ICVVapM0U:APA91bHr_QAt6u_t_ND3VnYv23xVTzaxZUWVALSVEJuU9nd7BXgI7lgK5767LnCsXyTwlizsaQbI24jc6UnUiwILc3HQGKnT0GvfFIXxvbCSFOgHUiahnv44A3JJ80OHt8Ajh4djDp6n"
+}
+
+
+
+
+Controlar ciclo de logs de error y acceso.
+Durante prueba de stress los logs de acceso, algunas veces, se comprimen antes de alcanzar el tamaño indicado y no se eliminan los más viejos.
+
+Traducir todos los en.js
+
+Verificar respuestas desde cache en articulos-full
+
+Crear servicio imagen API usuarios
+
+

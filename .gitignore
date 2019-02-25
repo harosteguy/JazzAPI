@@ -1,4 +1,4 @@
-logs/*
+!logs/dir.txt
 node_modules/*
-tmp/*
+!tmp/dir.txt
 dev/*

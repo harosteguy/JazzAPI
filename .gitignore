@@ -1,5 +1,7 @@
-!logs/dir.txt
 node_modules/*
 !tmp/dir.txt
 dev/*
-logs/
+logs/*
+!logs/dir.txt
+tmp/*
+!tmp/dir.txt

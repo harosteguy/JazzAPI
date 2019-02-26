@@ -2,3 +2,4 @@
 node_modules/*
 !tmp/dir.txt
 dev/*
+logs/

@@ -5,3 +5,4 @@ logs/*
 !logs/dir.txt
 tmp/*
 !tmp/dir.txt
+tmp/

@@ -18,5 +18,6 @@ module.exports = {
 	paraNuevaClaveEntraEn: 'Para poner tu nueva contraseña entra en ',
 	teEnviamosInstrucciones: 'Te enviamos un email con instrucciones para recuperar tu contraseña, si no lo encuentras busca en correo no deseado.',
 	errActualiClaves: 'Error actualizando contraseña.',
+	noEsJpg: 'El archivo no es .jpg',
 	errorDesconocido: 'Error desconocido.'
 };

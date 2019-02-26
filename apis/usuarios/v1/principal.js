@@ -26,6 +26,8 @@ module.exports = ( req, res ) => {
 			usuario.emailClave( req, res );
 		} else if ( aRuta[4] == 'preRegistro' ) {
 			usuario.preRegistro( req, res );
+		} else if ( aRuta[4] == 'imagen' ) {
+			usuario.imagen( req, res );
 		} else {
 			usuario.registro( req, res );
 		}

@@ -85,6 +85,12 @@ curl -X POST -d '{"nombre":"Juan Carlos", "apellido":"Rodriguez", "email":"corre
 
 curl -X POST -d '{"token":"0123456789abcdef0123456789abcdef"}' http://localhost:6666/apis/usuarios/v1
 
+-- Sube imagen
+
+curl -u 1:0123456789abcdef0123456789abcdef -X POST -H "Content-Type: multipart/form-data" \
+	-F "imagen=@/home/usuario/Escritorio/imagenes/imagen.jpg" \
+	http://localhost:6666/apis/usuarios/v1/imagen
+
 -- Envía email de recuperación de contraseña
 
 curl -X POST -d '{"email":"correo@electronico.com"}' http://localhost:6666/apis/usuarios/v1/emailClave

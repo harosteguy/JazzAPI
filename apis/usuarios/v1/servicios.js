@@ -4,6 +4,7 @@ let conf = require('../../apis-comun/config'),
 	BaseDatos = require('../../apis-comun/base-datos'),
 	db = new BaseDatos( conf.dbHost, conf.dbUser, conf.dbPass, 'cms_usuarios' ),
 	crypto = require('crypto'),
+	fs = require('fs'),
 	respuestas = require('../../apis-comun/respuestas'),
 	modError = require('../../apis-comun/error'),
 	nodemailer = require('nodemailer'),
@@ -73,22 +74,7 @@ module.exports = class Usuario {
 
 	// Verifica ID y token de usuario
 	autorizacion() {
-		let cred;
-		if ( !( cred = this.credenciales( this.req ) ) ) {
-			modError.responderError( 403, this.msj.usrNoAutori, this.res );
-			return;
-		}
-		db.consulta("select token, nombre, apellido, esAdmin from usuarios where id = ? limit 1", [cred.uid] )
-		.then( resul => {
-			// Verifica existencia del uid y coincidencia con el token
-			if ( resul.length == 0 || resul[0].token !== cred.token ) {
-				throw new modError.ErrorEstado(this.msj.usrNoAutori, 403 );
-			}
-			let usr = {
-				nombre: resul[0].nombre,
-				apellido: resul[0].apellido,
-				esAdmin: resul[0].esAdmin
-			};
+		this.usrOk().then( usr => {
 			respuestas.responder( 200, usr, this.req.headers['accept-encoding'], this.res );
 		}).catch( error => {
 			modError.manejarError( error, this.msj.usrNoAutori, this.res )
@@ -107,7 +93,7 @@ module.exports = class Usuario {
 		db.consulta("select id, nombre, apellido, email, token, esAdmin from usuarios where id = ? limit 1", [cred.uid] )
 		.then( resul => {
 			if ( resul.length == 0 || resul[0].token !== cred.token ) {		// Verifica existencia del uid y coincidencia con el token
-				throw new modError.ErrorEstado(this.msj.usrNoAutori, 403 );
+				throw new modError.ErrorEstado( this.msj.usrNoAutori, 403 );
 			}
 			let url = require('url'),
 				email = url.parse( this.req.url, true ).query.email;			// Extrae email de la URL
@@ -250,6 +236,32 @@ module.exports = class Usuario {
 		respuestas.responder( 200, { abc: 'def' }, this.req.headers['accept-encoding'], this.res );
 	}
 
+	imagen() {
+		let archivo, nombreArchivo;
+		this.usrOk().then( usr => {
+			let cuerpo;
+			try { cuerpo = JSON.parse( this.req.cuerpo ) }											// Obtiene info del archivo
+			catch ( error ) { throw new modError.ErrorEstado( this.msj.cuerpoNoJson, 400 ) }
+			archivo = cuerpo.archivo;
+			// Verifica tipo de archivo
+			// NOTA: La cadena en archivo.tipo no garantiza que el contenido del archivo sea jpg.
+			if ( archivo.tipo !== 'image/jpeg' ) {
+				throw new modError.ErrorEstado( this.msj.noEsJpg, 400 );
+			}
+			nombreArchivo = ('000000' + usr.id ).slice( -6 ) + '.jpg';
+			let archivoNuevo = conf.dirBaseImagen + 'usuarios/' + nombreArchivo;
+			return this.imagenRedim('tmp/' + archivo.nombreTmp, archivoNuevo, 260, 260 );
+		}).then( () => {
+			respuestas.responder( 200, { url: conf.urlBaseImagen + 'usuarios/' + nombreArchivo }, this.req.headers['accept-encoding'], this.res );
+			// Elimina archivo temporal
+			fs.unlink('tmp/' + archivo.nombreTmp, ( error ) => {
+				if ( error ) modError.logError( JSON.stringify( error ) );
+			});
+		}).catch( error => {
+			modError.manejarError( error, this.msj.usrNoAutori, this.res )
+		});
+	}
+
 	emailClave() {
 		let entrada;
 		try { entrada = JSON.parse( this.req.cuerpo ) }
@@ -390,6 +402,29 @@ module.exports = class Usuario {
 		return false;
 	}
 
+	usrOk() {
+		return new Promise( ( resuelve, rechaza ) => {
+			let cred;
+			if ( !( cred = this.credenciales( this.req ) ) ) {
+				rechaza( new modError.ErrorEstado( this.msj.usrNoAutori, 403 ) );
+				return;
+			}
+			db.consulta("select id, token, nombre, apellido, esAdmin from usuarios where id = ? limit 1", [cred.uid] )
+			.then( resul => {
+				// Verifica existencia del uid y coincidencia con el token
+				if ( resul.length == 0 || resul[0].token !== cred.token ) {
+					rechaza( new modError.ErrorEstado( this.msj.usrNoAutori, 403 ) );
+					return;
+				}
+				resuelve( { id: resul[0].id, nombre: resul[0].nombre, apellido: resul[0].apellido, esAdmin: resul[0].esAdmin } );
+				return;
+			}).catch( error => {
+				rechaza( new modError.ErrorEstado( this.msj.usrNoAutori, 403 ) );
+				return;
+			});
+		});
+	}
+
 	sanear( datos ) {
 		return new Promise( resuelve => {
 			let oFiltroTexto = {	// sanitizeHtml
@@ -440,6 +475,22 @@ module.exports = class Usuario {
 				resuelve( token );
 			}).catch( error => {
 				rechaza( new modError.ErrorEstado( this.msj.errCreandoToken, 500 ) );
+			});
+		});
+	}
+
+	imagenRedim( archivo, archivoNuevo, anchoNuevo, altoNuevo ) {
+		const { exec } = require('child_process');
+		const cl = `convert ${archivo} -resize ${anchoNuevo}x${altoNuevo}^ -gravity center -extent ${anchoNuevo}x${altoNuevo} ${archivoNuevo}`;
+		return new Promise( ( resuelve, rechaza ) => {
+			exec( cl, ( error, stdout, stderr ) => {
+				if ( error ) {
+					modError.logError( JSON.stringify( error ) );
+					rechaza();
+					return;
+				}
+				resuelve();
+				return;
 			});
 		});
 	}

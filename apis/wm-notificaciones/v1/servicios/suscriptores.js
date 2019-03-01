@@ -37,7 +37,9 @@ module.exports = class Suscriptores {
 	}
 
 	listar() {
-		let respuesta = {};
+		respuestas.responder( 200, { abc: "def"}, this.req.headers['accept-encoding'], this.res );
+////
+/*		let respuesta = {};
 		db.consulta("select * from usuarios order by fecha").then( resUsr => {
 			respuesta.usuarios = [];
 			for ( var i = 0, tot = resUsr.length; i < tot; i++ ) {
@@ -47,9 +49,12 @@ module.exports = class Suscriptores {
 		}).catch( error => {
 			modError.manejarError( error, this.msj.errorRecupeDatos, this.res );
 		});
+*/
 	}
 
 	totales() {
+
+////
 		let consulta = `select (select count(*) from usuarios where idioma = 'es') as esp,
 		(select count(*) from usuarios where idioma = 'en') as eng`;
 		db.consulta( consulta ).then( resUsr => {

@@ -10,6 +10,7 @@ CREATE TABLE `usuarios` (
   `uid` int(7) UNSIGNED NOT NULL DEFAULT 0,
   `ip` varchar(50) NOT NULL DEFAULT '',
   `urlPagina` varchar(255) NOT NULL DEFAULT '',
+  `userAgent` varchar(255) NOT NULL DEFAULT '',
   `fecha` datetime DEFAULT NULL,
   `enviados` mediumint(7) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -22,6 +23,7 @@ ALTER TABLE `usuarios`
   ADD KEY `idioma` (`idioma`),
   ADD KEY `uid` (`uid`),
   ADD KEY `urlPagina` (`urlPagina`),
+  ADD KEY `userAgent` (`userAgent`),
   ADD KEY `fecha` (`fecha`);
 
 ALTER TABLE `usuarios`

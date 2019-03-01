@@ -1,13 +1,33 @@
-//'use strict';
+/**
+ * This file is part of JazzAPI
+ *
+ * JazzAPI - RESTful APIs set developed in Node.js to serve and manage application contents.
+ * Copyright (C) 2019 by Guillermo Harosteguy <harosteguy@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
-var http = require('http'),
+'use strict';
+
+let http = require('http'),
 	url = require('url'),
 	conf = require('./apis/apis-comun/config'),
 	multipart = require('./apis/apis-comun/multipart'),
 	fs = require('fs'),
 	modError = require('./apis/apis-comun/error');
 
-var logAcceso = ( req ) => {
+let logAcceso = ( req ) => {
 	return new Promise( ( resuelve, rechaza ) => {
 		let ip = req.headers['x-forwarded-for'] || 
 			req.connection.remoteAddress || 
@@ -22,9 +42,9 @@ var logAcceso = ( req ) => {
 }
 
 // Rutea la petición a la API correspondiente
-var rutearPeticion = ( req, res ) => {
-	var ruta = url.parse( req.url ).pathname;
-	var aRuta = ruta.split('/');
+let rutearPeticion = ( req, res ) => {
+	let ruta = url.parse( req.url ).pathname;
+	let aRuta = ruta.split('/');
 	if ( aRuta[1] == 'apis') {
 
 //// 
@@ -50,9 +70,9 @@ var rutearPeticion = ( req, res ) => {
 	}
 };
 
-var esMultipartFormData = req => {
+let esMultipartFormData = req => {
 	if ( !req.headers['content-type'] ) return false;
-	var items = req.headers['content-type'].split(';');
+	let items = req.headers['content-type'].split(';');
 	if ( !items ) return false;
 	for ( i = 0; i < items.length; i++ ) {
 		let item = String( items[i] ).trim();
@@ -69,7 +89,7 @@ http.createServer( ( req, res ) => {
 		modError.logError( JSON.stringify( error ) );
 	});
 
-	var mfdBuffer,								// Buffer para el cuerpo multipart/form-data
+	let mfdBuffer,								// Buffer para el cuerpo multipart/form-data
 		cuerpo = '',
 		esMFD = esMultipartFormData( req ),		// True si content-type de la petición es multipart/form-data
 		mfdBufferIndex = 0;
@@ -90,14 +110,11 @@ http.createServer( ( req, res ) => {
 		req.on('data', fragmento => {
 			//cuerpo += fragmento.toString();
 			cuerpo += fragmento;
-
-
-
-
 ////
 			// PENDIENTE
 			// Controlar tamaño máximo del cuerpo de la petición.
 			// Va a memoria así que se puede agotar.
+			// De éste control se puede encargar un proxy inverso
 		});
 	}
 
@@ -107,20 +124,20 @@ http.createServer( ( req, res ) => {
 		//
 		if ( esMFD ) {												// La cabeceera content-type de la petición es multipart/form-data
 			if ( mfdBufferIndex < ( 2*1024*1024 ) ) {				// Verifica exceso de tamaño del cuerpo
-				var mfd = mfdBuffer.slice( 0, mfdBufferIndex );		// Obtiene porción con datos del buffer
-				var boundary = multipart.getBoundary( req.headers['content-type'] );
+				let mfd = mfdBuffer.slice( 0, mfdBufferIndex );		// Obtiene porción con datos del buffer
+				let boundary = multipart.getBoundary( req.headers['content-type'] );
 				if ( boundary ) {
-					var partes = multipart.Parse( mfd, boundary );	// Parsea las partes
-					var archivo = {
+					let partes = multipart.Parse( mfd, boundary );	// Parsea las partes
+					let archivo = {
 						nombre: partes[0].filename,
 						nombreTmp: require('crypto').randomBytes( 16 ).toString('hex'),
 						tipo: partes[0].type
 					};
 
-					var writeStream = fs.createWriteStream( './tmp/' + archivo.nombreTmp, { flags : 'w' } );
+					let writeStream = fs.createWriteStream( './tmp/' + archivo.nombreTmp, { flags : 'w' } );
 
 					// Initiate the source
-					var bufferStream = new require('stream').PassThrough();
+					let bufferStream = new require('stream').PassThrough();
 					// Write your buffer
 					bufferStream.end( partes[0].data );
 					// Pipe it to something else  (i.e. stdout)
@@ -148,4 +165,4 @@ http.createServer( ( req, res ) => {
 
 }).listen( conf.puertoHttp );
 
-console.log('\033[33;1mServidor de APIs iniciado en el puerto ' + conf.puertoHttp + '\n' + new Date().toISOString() + '\n\033[31mReflejo web\033[0m\n\n');
+console.log('Servidor JazzAPI iniciado en el puerto ' + conf.puertoHttp + '\n' + new Date().toISOString() + '\n\n');

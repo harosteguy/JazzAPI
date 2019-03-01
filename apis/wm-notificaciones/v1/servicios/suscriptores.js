@@ -53,22 +53,27 @@ module.exports = class Suscriptores {
 	}
 
 	totales() {
-
-////
-		let consulta = `select (select count(*) from usuarios where idioma = 'es') as esp,
-		(select count(*) from usuarios where idioma = 'en') as eng`;
-		db.consulta( consulta ).then( resUsr => {
-			let respuesta = {
-				idioma: {
-					es: resUsr[0].esp,
-					en: resUsr[0].eng
-				}
-			};
+		let respuesta = {};
+		db.consulta('select idioma, count(*) as cantidad from usuarios group by idioma order by idioma')
+		.then( resUsr => {
+			respuesta.idioma = {};
+			if ( resUsr.length > 0 ) {
+				resUsr.forEach( usr => { respuesta.idioma[ usr.idioma ] = usr.cantidad } );
+			} else {
+				respuesta.idioma[ conf.setIdiomas[0] ] = 0;		// Idioma por defecto con cero
+			}
+			return db.consulta('select urlPagina, count(*) as cantidad from usuarios group by urlPagina order by urlPagina');
+		}).then( resUsr => {
+			respuesta.urlPagina = [];
+			if ( resUsr.length > 0 ) {
+				resUsr.forEach( usr => {
+					respuesta.urlPagina.push( { url: usr.urlPagina, cantidad: usr.cantidad } );
+				});
+			}
 			respuestas.responder( 200, respuesta, this.req.headers['accept-encoding'], this.res );
 		}).catch( error => {
 			modError.manejarError( error, this.msj.errorRecupeDatos, this.res );
 		});
-
 	}
 
 }

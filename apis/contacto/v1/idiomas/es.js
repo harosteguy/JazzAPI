@@ -1,6 +1,6 @@
 module.exports = {
-	metodoNoValido: 'El método no es válido',
-	cuerpoNoJson: 'El cuerpo de la petición está mal formado, debe ser una cadena JSON',
+	metodoNoValido: 'El método no es válido.',
+	cuerpoNoJson: 'El cuerpo de la petición está mal formado, debe ser una cadena JSON.',
 	faltaNombre: 'Falta el nombre. ',
 	faltaCorreo: 'Falta el correo. ',
 	faltaMensaje: 'Falta el mensaje. ',

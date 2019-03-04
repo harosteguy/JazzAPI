@@ -1,7 +1,7 @@
 module.exports = {
 	usrNoAutori: 'Usuario no autorizado.',
 	metodoNoValido: 'El método no es válido.',
-	usrNoExiste: 'El usuario no existe',
+	usrNoExiste: 'El usuario no existe.',
 	errRecupeDatos: 'Error recuperando datos.',
 	errGuardandoDatos: 'Error guardando datos.',
 	faltaNombre: 'Falta el nombre.',

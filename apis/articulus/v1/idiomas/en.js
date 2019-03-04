@@ -1,20 +1,16 @@
 module.exports = {
-
-	errServidorVerLog: 'Error de servidor, ver log para detalles',
-	errorFormatoPeticion: 'El formato de la petición no es correcto',
-
-	usrNoAutori: 'Usuario no autorizado',
-	servicioNoValido: 'El servicio no es válido',
-	metodoNoValido: 'El método no es válido',
-	cuerpoNoJson: 'El cuerpo de la petición está mal formado, debe ser una cadena JSON',
-	errConexDatos: 'Error en la conexión de datos',
-	errConsultaDatos: 'Error consultando datos',
-	errRecupeDatos: 'Error recuperando datos',
-	elBlogNoExiste: 'El blog no existe',
-	elAutorNoExiste: 'El autor no existe',
-	laCatNoExiste: 'La categoría no existe',
-	elArticuloNoExiste: 'El artículo no existe',
-	faltaTexto: 'Falta el texto'
-
-
+	errServidorVerLog: 'Server error, see log for details.',
+	errorFormatoPeticion: 'The format of the request is not correct.',
+	usrNoAutori: 'Unauthorized user.',
+	servicioNoValido: 'The service is not valid.',
+	metodoNoValido: 'The method is not valid.',
+	cuerpoNoJson: 'The body of the request is malformed, it must be a JSON string.',
+	errConexDatos: 'Error in the data connection.',
+	errConsultaDatos: 'Error querying data.',
+	errRecupeDatos: 'Error getting data.',
+	elBlogNoExiste: 'The blog does not exist',
+	elAutorNoExiste: 'The author does not exist.',
+	laCatNoExiste: 'The category does not exist.',
+	elArticuloNoExiste: 'El artículo no existe.',
+	faltaTexto: 'The text is missing.'
 };

@@ -32,12 +32,12 @@ module.exports = {
 			'Content-Type': 'application/json',
 			'Cache-Control': 'no-store, no-cache, must-revalidate',
 			'Pragma': 'no-cache',
-// CORS
+			// CORS
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE',
 			'Access-Control-Allow-Headers': 'Authorization, Accept-Language, X-Accept-Charset, X-Accept, Content-Type',
 			'Allow': 'GET, POST, OPTIONS, PUT, DELETE'
-//
+			//
 		};
 		// Comprime si se indica en la cabecera de la petición y responde
 		if ( acceptEncoding.match( /\bdeflate\b/ ) ) {		// PENDIENTE Trabajar el parser de accept-encoding. Ver http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3

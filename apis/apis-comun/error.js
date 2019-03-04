@@ -43,17 +43,7 @@ let manejarError = ( error, textoAlt, res ) => {
 
 let responderError = ( estado, texto, res ) => {
 	estado = estado || 500;
-
-// 
 	respuestas.responder( estado, { error: texto }, '', res );
-/*
-	res.writeHead( estado, { 'Content-Type': 'application/json' } );
-	res.write( JSON.stringify( { error: texto } ) );
-	res.end();
-*/
-
-
-
 }
 
 let logError = ( texto ) => {

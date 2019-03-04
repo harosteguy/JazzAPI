@@ -75,7 +75,6 @@ module.exports = class Articulo {
 		return new Promise( ( resuelve, rechaza ) => {
 			utiles.obtenerIdBlog( blogBase ).then( idBlog => {
 				let consulta = "select id, uid, copete, titulo, tituloUrl, entradilla, texto, publicado, fechaCreado, fechaPublicado, imgPrincipal, auxTexto, auxFecha, auxEntero, auxDecimal, " +
-				"(select nombreAutor from blog_autores where uid = blog_articulos.uid limit 1) as autor " +
 				"from blog_articulos where tituloUrl = ? and idBlog = ? and publicado = 1 and fechaPublicado < now() limit 1";
 				return db.consulta( consulta, [ nombreBase, idBlog ] );
 			}).then( arti => {
@@ -97,7 +96,6 @@ module.exports = class Articulo {
 			utiles.obtenerIdBlog( blogBase ).then( idBlog => {
 				// Construye y ejecuta la consulta
 				let consulta = "select id, tituloUrl, copete, titulo, fechaPublicado, imgPrincipal, entradilla, auxTexto, auxFecha, auxEntero, auxDecimal, " +
-				"(select nombreAutor from blog_autores where uid = blog_articulos.uid limit 1) as autor " +
 				"from blog_articulos where idBlog = ? and publicado = 1 and fechaPublicado < now() "
 				consulta += orden === 'alfa' ? "order by titulo " : "order by fechaPublicado ";
 				consulta += ordenDir;

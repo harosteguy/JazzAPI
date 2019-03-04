@@ -68,7 +68,7 @@ module.exports = class Mensajes {
 			}).then( suscris => {
 				delete noti.filtros;
 				webpush.setGCMAPIKey( conf.gcmApiKey );
-				webpush.setVapidDetails('mailto:reflejowebvallarta@gmail.com', conf.vapidPublicKey, conf.vapidPrivateKey );
+				webpush.setVapidDetails(`mailto:${conf.correoVapid}`, conf.vapidPublicKey, conf.vapidPrivateKey );
 				let cadenaPromesas = Promise.resolve();
 				for ( let i = 0; i < suscris.length; i++ ) {
 					const suscri = suscris[i];

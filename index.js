@@ -74,7 +74,7 @@ let esMultipartFormData = req => {
 	if ( !req.headers['content-type'] ) return false;
 	let items = req.headers['content-type'].split(';');
 	if ( !items ) return false;
-	for ( i = 0; i < items.length; i++ ) {
+	for ( let i = 0; i < items.length; i++ ) {
 		let item = String( items[i] ).trim();
 		if ( item.indexOf( 'multipart/form-data' ) >= 0 ) return true;
 	}

@@ -13,8 +13,8 @@ JazzAPI es un grupo de APIs RESTful desarrolladas en Node.js para servir y manej
 
 - [Pre requisitos](#pre-requisitos)
 - [Instalación](#instalación)
-	- [Bases de datos](#bases-de-datos)
 	- [APIs](#apis)
+	- [Bases de datos](#bases-de-datos)
 - [Configuración](#configuración)
 - [Uso](#uso)
 	- [API WM Chorro](#api-wm-chorro)
@@ -35,6 +35,16 @@ JazzAPI es un grupo de APIs RESTful desarrolladas en Node.js para servir y manej
 
 ---
 ## Instalación
+
+### APIs
+
+Si tiene instalado git <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git> abra un terminal en la carpeta donde desea hacer la instalación y clone el repositorio con el siguiente comando:
+`git clone https://github.com/harosteguy/JazzAPI.git`
+
+También puede descargar JazzAPI en <https://github.com/harosteguy/JazzAPI/archive/master.zip> y descomprimir el archivo en la carpeta deseada.
+
+Para instalar las dependencias abra un terminal en la carpeta JazzAPI, donde se encuentra el archivo package.json y ejecute el siguiente comando:
+`npm install`
 
 ### Bases de datos
 En la carpeta JazzAPI/db se encuentran los siguientes archivos para crear las bases de datos y usuarios en el servidor MySQL:
@@ -59,16 +69,6 @@ Se deben poner dos contraseñas seguras. Las mismas contraseñas se deben poner 
 
 Luego de editar los archivos, para hacer la instalación, use en un terminal el siguiente comando con cada archivo.
 `mysql -u root -p < cms_articulus.sql`
-
-### APIs
-
-Si tiene instalado git <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git> abra un terminal en la carpeta donde desea hacer la instalación y clone el repositorio con el siguiente comando:
-`git clone https://github.com/harosteguy/JazzAPI.git`
-
-También puede descargar JazzAPI en <https://github.com/harosteguy/JazzAPI/archive/master.zip> y descomprimir el archivo en la carpeta deseada.
-
-Para instalar las dependencias abra un terminal en la carpeta JazzAPI, donde se encuentra el archivo package.json y ejecute el siguiente comando:
-`npm install`
 
 **[Ir arriba](#tabla-de-contenidos)**
 

@@ -47,7 +47,7 @@ module.exports = class Articulo {
 			let contenido, idContenido;
 			if ( cache ) {
 				// Busca respuesta de la petición en cache
-				let idContenido = require('crypto').createHash('md5').update( this.req.url ).digest('hex');			// md5 de la URL para identificar cntenido en cache
+				idContenido = require('crypto').createHash('md5').update( this.req.url ).digest('hex');			// md5 de la URL para identificar cntenido en cache
 				contenido = mCache.obtener( idContenido );
 			}
 			if ( cache && contenido.disponible ) {

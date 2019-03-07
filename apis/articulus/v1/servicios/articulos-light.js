@@ -44,13 +44,13 @@ module.exports = class Articulo {
 			let contenido = mCache.obtener( idContenido );
 			if ( contenido.disponible ) {
 				// Responde petición desde cache
-				//contenido.datos.cache = 1;
+				contenido.datos.cache = 1;
 				respuestas.responder( 200, contenido.datos, this.req.headers['accept-encoding'], this.res );
 			} else {
 				// Responde petición desde base de datos
 				if ( aRuta[7] ) {																					// aRuta[7] Nombre base del artículo
 					this.obtener( aRuta[5], aRuta[7] ).then( respuesta => {											// aRuta[5] Nombre base del blog
-						//respuesta.cache = 0;
+						respuesta.cache = 0;
 						respuestas.responder( 200, respuesta, this.req.headers['accept-encoding'], this.res );
 						mCache.cachear( idContenido, respuesta ).catch( error => {									// Cachea la respuesta
 							modError.logError( error.name + ' ' + error.message + '\n' + error.stack );
@@ -58,7 +58,7 @@ module.exports = class Articulo {
 					}).catch( error => { modError.manejarError( error, this.msj.errRecupeDatos, this.res ) } );
 				} else {
 					this.listar( aRuta[5] ).then( respuesta => {
-						//respuesta.cache = 0;
+						respuesta.cache = 0;
 						respuestas.responder( 200, respuesta, this.req.headers['accept-encoding'], this.res );
 						mCache.cachear( idContenido, respuesta ).catch( error => {
 							modError.logError( error.name + ' ' + error.message + '\n' + error.stack );
@@ -74,7 +74,7 @@ module.exports = class Articulo {
 	obtener( blogBase, nombreBase ) {
 		return new Promise( ( resuelve, rechaza ) => {
 			utiles.obtenerIdBlog( blogBase ).then( idBlog => {
-				let consulta = "select id, uid, copete, titulo, tituloUrl, entradilla, texto, publicado, fechaCreado, fechaPublicado, imgPrincipal, auxTexto, auxFecha, auxEntero, auxDecimal, " +
+				let consulta = "select id, uid, copete, titulo, tituloUrl, entradilla, texto, publicado, fechaCreado, fechaPublicado, imgPrincipal, auxTexto, auxFecha, auxEntero, auxDecimal " +
 				"from blog_articulos where tituloUrl = ? and idBlog = ? and publicado = 1 and fechaPublicado < now() limit 1";
 				return db.consulta( consulta, [ nombreBase, idBlog ] );
 			}).then( arti => {
@@ -92,13 +92,17 @@ module.exports = class Articulo {
 			//
 			let orden = ( urlQuery.orden && ['alfa','crono'].indexOf( urlQuery.orden ) !== -1 ) ? urlQuery.orden : 'crono';
 			let ordenDir = ( urlQuery.ordenDir && ['asc','desc'].indexOf( urlQuery.ordenDir ) !== -1 ) ? urlQuery.ordenDir : 'desc';
+			let maxArticulos = parseInt( urlQuery.maxArticulos, 10 ) || conf.artisResDefecto;
+				maxArticulos = maxArticulos > conf.maxArtisRespuesta ? conf.maxArtisRespuesta : maxArticulos;
+				maxArticulos = maxArticulos < 1 ? 1 : maxArticulos;
 			//
 			utiles.obtenerIdBlog( blogBase ).then( idBlog => {
 				// Construye y ejecuta la consulta
-				let consulta = "select id, tituloUrl, copete, titulo, fechaPublicado, imgPrincipal, entradilla, auxTexto, auxFecha, auxEntero, auxDecimal, " +
+				let consulta = "select id, tituloUrl, copete, titulo, fechaPublicado, imgPrincipal, entradilla, auxTexto, auxFecha, auxEntero, auxDecimal " +
 				"from blog_articulos where idBlog = ? and publicado = 1 and fechaPublicado < now() "
 				consulta += orden === 'alfa' ? "order by titulo " : "order by fechaPublicado ";
 				consulta += ordenDir;
+				consulta += " limit " + maxArticulos;
 				return db.consulta( consulta, [ idBlog ] );
 			}).then( resArti => {
 				resuelve( { articulos: resArti } );

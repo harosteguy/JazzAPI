@@ -26,16 +26,16 @@ const confi = {
 	vigenciaCache: 48																							// Tiempo (en horas) que cada contenido estará disponible
 };
 
-if ( !global.rwCache ) global.rwCache = {};																		// Crea la cache
+if ( !global.cmsCache ) global.cmsCache = {};																		// Crea la cache
 // { '9f91bb88fe590ab9b0a04699149935fa': { longitud: 123, tiempo: 1531367043000, datos: { appProyectos: "Proyectos", appInicio: "Inicio" } }, ... }
 
 module.exports = {
 	obtener: idConte => {
 		let contenido = {};
-		if ( global.rwCache[ idConte ] ) {
+		if ( global.cmsCache[ idConte ] ) {
 			let vigCache = 3600000 * confi.vigenciaCache;		 												// Horas a milisegundos
-			contenido.disponible = global.rwCache[ idConte ].tiempo > ( new Date().getTime() - vigCache );		// true si el contenido está vigente
-			contenido.datos = global.rwCache[ idConte ].datos;
+			contenido.disponible = global.cmsCache[ idConte ].tiempo > ( new Date().getTime() - vigCache );		// true si el contenido está vigente
+			contenido.datos = global.cmsCache[ idConte ].datos;
 		} else {
 			contenido.disponible = false;
 		}
@@ -48,23 +48,23 @@ module.exports = {
 				resuelve( false );
 				return;
 			}
-			if ( global.rwCache[ idConte ] ) {																	// Si el contenido existe lo borra
-				delete global.rwCache[ idConte ];
+			if ( global.cmsCache[ idConte ] ) {																	// Si el contenido existe lo borra
+				delete global.cmsCache[ idConte ];
 			}
 			let longiEnCache = 0;
-			for ( var idCon in global.rwCache ) {																// Obtiene tamaño total de los contenidos en cache
-				longiEnCache += global.rwCache[ idCon ].longitud;
+			for ( var idCon in global.cmsCache ) {																// Obtiene tamaño total de los contenidos en cache
+				longiEnCache += global.cmsCache[ idCon ].longitud;
 			}
 			// Si el contenido no cabe en la cache; hace espacio 
 			// para el nuevo contenido eliminando los más viejos
 			if ( ( longiEnCache + longiConte ) > confi.longitudCache ) {
 				// Crea un array de la cache para ordenar por tiempo
 				let aTiempo = [];
-				for ( var idCon in global.rwCache ) {
+				for ( var idCon in global.cmsCache ) {
 					aTiempo.push({
 						id: idCon,
-						tiempo: global.rwCache[ idCon ].tiempo,
-						longitud: global.rwCache[ idCon ].longitud
+						tiempo: global.cmsCache[ idCon ].tiempo,
+						longitud: global.cmsCache[ idCon ].longitud
 					});
 				}
 				aTiempo.sort( ( a, b ) => { return a.tiempo - b.tiempo } );										// Ordena, los más viejos primero
@@ -78,18 +78,18 @@ module.exports = {
 					if ( espacioALiberar > liberado ) {
 						// Borra hasta tener espacio para el contenido
 						liberado += conte.longitud;
-						delete global.rwCache[ conte.id ];
+						delete global.cmsCache[ conte.id ];
 					} else {
 						// Si quedan contenidos caducos los borra
 						if ( conte.tiempo < ( ahora - vigCache ) ) {
-							delete global.rwCache[ conte.id ];
+							delete global.cmsCache[ conte.id ];
 						} else {
 							return true;
 						}
 					}
 				});
 			}
-			global.rwCache[ idConte ] = { tiempo: new Date().getTime(), longitud: longiConte, datos: datos };	// Guarda en cache
+			global.cmsCache[ idConte ] = { tiempo: new Date().getTime(), longitud: longiConte, datos: datos };	// Guarda en cache
 /*			// Monitor de cache
 			if ( process.argv.indexOf('monitorCache') > -1 ) {
 				longiEnCache = 0;
@@ -97,10 +97,10 @@ module.exports = {
 					caducas = 0,
 					ahora = new Date().getTime(),
 					vigencia = 3600000 * confi.vigenciaCache;
-				for ( var idCon in global.rwCache ) {
+				for ( var idCon in global.cmsCache ) {
 					totPeticiones ++;
-					longiEnCache += global.rwCache[ idCon ].longitud;
-					if ( global.rwCache[ idCon ].tiempo < ( ahora - vigencia ) ) {
+					longiEnCache += global.cmsCache[ idCon ].longitud;
+					if ( global.cmsCache[ idCon ].tiempo < ( ahora - vigencia ) ) {
 						caducas ++;
 					}
 				}

@@ -80,7 +80,7 @@ module.exports = {
 		return fh[0] && module.exports.esFecha( fh[0] ) && fh[1] && module.exports.esHora( fh[1] );
 	},
 	limpiarCache: () => {
-		global.rwCache = {};		// Purga cache
+		global.cmsCache = {};		// Purga cache
 	},
 	padIzquierdo: ( cadena, relleno ) => {
 		return String( relleno + cadena ).slice( - relleno.length );

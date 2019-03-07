@@ -68,7 +68,7 @@ module.exports = class Contenidos {
 		if ( datos ) {
 			db.consulta("insert into contenidos set ?", datos ).then( () => {
 				respuestas.responder( 200, { url: urlApi + datos.id }, this.req.headers['accept-encoding'], this.res );
-				global.rwCache = {};		// Purga cache
+				global.cmsCache = {};		// Purga cache
 			}).catch( error => {
 				if ( error.errno == 1062 ) {
 					modError.responderError( 409, this.msj.conteDuplicado, this.res );
@@ -92,7 +92,7 @@ module.exports = class Contenidos {
 		if ( datos ) {
 			db.consulta("update contenidos set ? where id = ? limit 1", [ datos, idOriginal ] ).then( () => {
 				respuestas.responder( 200, { url: urlApi + datos.id }, this.req.headers['accept-encoding'], this.res );
-				global.rwCache = {};		// Purga cache
+				global.cmsCache = {};		// Purga cache
 			}).catch( error => { modError.responderError( 500, this.msj.noPudoActualiConte, this.res ) } );
 		}
 	}
@@ -101,7 +101,7 @@ module.exports = class Contenidos {
 		id = id.replace( /[^0-9a-z]/gi, '').substr( 0, 30 );	// Sanea
 		db.consulta("delete from contenidos where id = ? limit 1", [id] ).then( () => {
 			respuestas.responder( 204, {}, this.req.headers['accept-encoding'], this.res );
-			global.rwCache = {};			// Purga cache
+			global.cmsCache = {};			// Purga cache
 		}).catch( error => { modError.responderError( 500, this.msj.noPudoBorrarConte, this.res ) } );
 	}
 

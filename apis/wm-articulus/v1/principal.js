@@ -26,12 +26,11 @@ let url = require('url'),
 // Función única que rutea a los servicios de la API
 module.exports = ( req, res ) => {
 
-	let msj = require('./idiomas/' + req.idioma );
+	let msj = require('./idiomas/' + req.idioma ),
+		ruta = url.parse( req.url ).pathname,
+		aRuta = ruta.split('/');
 
 	require('../../apis-comun/usr-ok')( req ).then( usuario => {
-		let ruta = url.parse( req.url ).pathname,
-			aRuta = ruta.split('/');
-
 		if ( aRuta[4] === 'blogs') {
 			if ( !aRuta[6]) {
 				// /apis/wm-articulus/v1/blogs
@@ -89,6 +88,18 @@ module.exports = ( req, res ) => {
 		}
 	})
 	.catch( error => {
+		// Elimina imagen temporal si se usó el servicio imagenes
+		if ( aRuta[8] === 'imagenes') {
+			let cuerpo;
+			try { cuerpo = JSON.parse( req.cuerpo ) }											// Obtiene info del archivo
+			catch ( err ) { cuerpo = false }
+			if ( cuerpo ) {
+				require('fs').unlink('tmp/' + cuerpo.archivo.nombreTmp, error => {
+					if ( error ) modError.logError( JSON.stringify( error ) );
+				});
+			}
+		}
+		//
 		if ( error.estado ) {
 			if ( error.estado == 403 ) {
 				modError.responderError( error.estado, msj.usrNoAutori, res );

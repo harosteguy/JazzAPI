@@ -107,7 +107,7 @@ module.exports = class Imagen {
 				});
 			});
 		}).then( () => {
-			try { cuerpo = JSON.parse( this.req.cuerpo ) }										// Obtiene info del archivo
+			try { cuerpo = JSON.parse( this.req.cuerpo ) }											// Obtiene info del archivo
 			catch ( error ) { throw new modError.ErrorEstado( this.msj.cuerpoNoJson, 400 ) }
 			archivo = cuerpo.archivo;
 			// Verifica tipo de archivo y sanea el nombre
@@ -136,7 +136,13 @@ module.exports = class Imagen {
 			fs.unlink('tmp/' + archivo.nombreTmp, ( error ) => {
 				if ( error ) modError.logError( JSON.stringify( error ) );
 			});
-		}).catch( error => { modError.manejarError( error, this.msj.errorCreandoSetImg, this.res ) } );
+		}).catch( error => {
+			modError.manejarError( error, this.msj.errorCreandoSetImg, this.res );
+			// Elimina archivo temporal
+			fs.unlink('tmp/' + archivo.nombreTmp, ( error ) => {
+				if ( error ) modError.logError( JSON.stringify( error ) );
+			});
+		});
 	}
 
 	borrar( aRuta ) {

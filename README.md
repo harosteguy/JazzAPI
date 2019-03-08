@@ -122,6 +122,11 @@ module.exports = {
 ---
 ## Uso
 
+Abrir un terminal en la carpeta JazzAPI y ejecutar:
+```
+node index.js
+```
+
 En el archivo [EJEMPLOS.md](EJEMPLOS.md) se pueden ver todos los ejemplos de uso.
 
 ---

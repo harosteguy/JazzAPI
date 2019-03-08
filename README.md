@@ -1,6 +1,6 @@
 # JazzAPI
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/harosteguy/JazzAPI.svg)&nbsp;![GitHub top language](https://img.shields.io/github/languages/top/harosteguy/JazzAPI.svg?color=green)&nbsp;![David](https://img.shields.io/david/harosteguy/JazzAPI.svg)&nbsp;![GitHub release](https://img.shields.io/github/release/harosteguy/JazzAPI.svg)&nbsp;![GitHub Release Date](https://img.shields.io/github/release-date/harosteguy/JazzAPI.svg)&nbsp;![GitHub last commit](https://img.shields.io/github/last-commit/harosteguy/JazzAPI.svg)&nbsp;[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/harosteguy/JazzAPI.svg)&nbsp;![GitHub top language](https://img.shields.io/github/languages/top/harosteguy/JazzAPI.svg?color=green)&nbsp;![David](https://img.shields.io/david/harosteguy/JazzAPI.svg)&nbsp;![GitHub last commit](https://img.shields.io/github/last-commit/harosteguy/JazzAPI.svg)&nbsp;[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 JazzAPI es un grupo de APIs RESTful desarrolladas en Node.js para servir y manejar contenidos de aplicaciones.
 

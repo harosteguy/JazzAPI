@@ -58,7 +58,7 @@ Base de datos para la API Usuarios.
 - **cms_usuarios_data.sql**
 En cms_usuarios_data.sql se encuentra el registro del usuario administrador de las APIs.
 Se debe poner un correo electrónico real para uso posterior.
-La contraseña por defecto es 'qwerty'. Se puede cambiar en cualquier momento usando la [API Usuarios](#api-usuarios)
+La contraseña por defecto es 'qwerty'. Se puede cambiar en cualquier momento usando la API Usuarios
 - **usuarios.sql**
 En usuarios.sql se crean dos usuarios para las bases de datos y se les otorga los privilegios necesarios.
 - **usuarios_claves.sql**

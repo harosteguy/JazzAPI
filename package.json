@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/perrosucio/JazzAPI.git"
+    "url": "git+https://github.com/harosteguy/JazzAPI.git"
   },
   "author": "Guillermo Harosteguy",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/perrosucio/JazzAPI/issues"
+    "url": "https://github.com/harosteguy/JazzAPI/issues"
   },
-  "homepage": "https://github.com/perrosucio/JazzAPI#readme",
+  "homepage": "https://github.com/harosteguy/JazzAPI#readme",
   "dependencies": {
     "mkdirp": "^0.5.1",
     "mysql": "^2.16.0",

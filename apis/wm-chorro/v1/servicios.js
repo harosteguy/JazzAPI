@@ -80,15 +80,7 @@ module.exports = class Contenidos {
 	}
 
 	actualizar( idOriginal, idioma ) {
-		let datos;
-		if ( typeof idioma !== 'undefined' && ['es','en'].indexOf( idioma ) !== -1 ) {
-			// Se estaría actualizando el contnido de un solo idioma
-			let aux = this.verificarDatosParcial();		// Extrae datos del cuerpo de la petición, los sanea y verifica
-			datos = {};
-			datos[idioma] = aux.contenido;
-		} else {
-			datos = this.verificarDatos();				// Extrae datos del cuerpo de la petición, los sanea y verifica
-		}
+		let datos = this.verificarDatos();		// Extrae datos del cuerpo de la petición, los sanea y verifica
 		if ( datos ) {
 			db.consulta("update contenidos set ? where id = ? limit 1", [ datos, idOriginal ] ).then( () => {
 				respuestas.responder( 200, { url: urlApi + datos.id }, this.req.headers['accept-encoding'], this.res );
@@ -110,8 +102,7 @@ module.exports = class Contenidos {
 	sanear( datos ) {
 		datos.id = typeof datos.id !== 'undefined' ? datos.id : '';
 		datos.id = datos.id.replace( /[^0-9a-z]/gi, '').substr( 0, 30 );	// Hasta 30 caracteres alfanuméricos
-		datos.es = typeof datos.es !== 'undefined' ? datos.es : '';
-		datos.en = typeof datos.en !== 'undefined' ? datos.en : '';
+
 		let filtro = {
 			allowedTags: [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
 				'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
@@ -128,8 +119,11 @@ module.exports = class Contenidos {
 			allowProtocolRelative: true,
 			allowedIframeHostnames: ['www.youtube.com', 'player.vimeo.com']
 		};
-		datos.es = sanitizeHtml( datos.es, filtro );
-		datos.en = sanitizeHtml( datos.en, filtro );
+		conf.setIdiomas.forEach( idioma => {
+			if( typeof datos[idioma] !== 'undefined') {
+				datos[idioma] = sanitizeHtml( datos[idioma], filtro );
+			}
+		});
 		return datos;
 	}
 
@@ -139,39 +133,6 @@ module.exports = class Contenidos {
 		catch ( nn ) { modError.responderError( 400, this.msj.cuerpoNoJson, this.res ); return false; }
 		datos = this.sanear( datos );
 		if ( datos.id === '') { modError.responderError( 400, this.msj.faltaId, this.res ); return false; }
-		if ( datos.es === '') { modError.responderError( 400, this.msj.faltaConteEs, this.res ); return false; }
-		if ( datos.en === '') { modError.responderError( 400, this.msj.faltaConteEn, this.res ); return false; }
-		return datos;
-	}
-
-	sanearParcial( datos ) {
-		datos.contenido = typeof datos.contenido !== 'undefined' ? datos.contenido : '';
-		let filtro = {
-			allowedTags: [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
-				'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
-				'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'iframe', 'img'
-			],
-			allowedAttributes: {
-				a: [ 'href', 'name', 'target' ],
-				img: [ 'src', 'alt' ]
-			},
-			selfClosing: [ 'img', 'br', 'hr' ],
-			allowedSchemes: [ 'http', 'https', 'ftp', 'mailto' ],
-			allowedSchemesByTag: {},
-			allowedSchemesAppliedToAttributes: [ 'href', 'src', 'cite' ],
-			allowProtocolRelative: true,
-			allowedIframeHostnames: ['www.youtube.com', 'player.vimeo.com']
-		};
-		datos.contenido = sanitizeHtml( datos.contenido, filtro );
-		return datos;
-	}
-
-	verificarDatosParcial() {
-		let datos = {};
-		try { datos = JSON.parse( this.req.cuerpo ); }
-		catch ( nn ) { modError.responderError( 400, this.msj.cuerpoNoJson, this.res ); return false; }
-		datos = this.sanear( datos );
-		if ( datos.contenido === '') { modError.responderError( 400, this.msj.faltaContenido, this.res ); return false; }
 		return datos;
 	}
 

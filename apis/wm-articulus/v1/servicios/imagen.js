@@ -27,7 +27,8 @@ let conf = require('../../../apis-comun/config'),
 	mkdirp = require('mkdirp'),
 	utiles = require('../comun/utiles'),
 	respuestas = require('../../../apis-comun/respuestas'),
-	modError = require('../../../apis-comun/error');
+	modError = require('../../../apis-comun/error'),
+	imgsPermitidas = [ {ext: 'jpg', mime: 'image/jpeg'}, {ext: 'png', mime: 'image/png'} ];
 
 module.exports = class Imagen {
 
@@ -81,12 +82,17 @@ module.exports = class Imagen {
 				});
 			});
 		}).then( archivos => {
+			let imgOk;
 			let i = archivos.length;
 			while ( i-- ) {
-				if ( archivos[i].substr( -4 ) === '.jpg' ) {
+				for ( let img of imgsPermitidas ) {
+					imgOk = archivos[i].substr( -3 ) === img.ext;
+					if ( imgOk ) break;
+				}
+				if ( imgOk ) {
 					archivos[i] = urlBase + archivos[i];	// Agrega protocolo, dominio y ruta al archivo
 				} else {
-					archivos.splice( i, 1 );				// Filtra .jpg
+					archivos.splice( i, 1 );				// Filtra extensiones permitidas
 				}
 			}
 			respuestas.responder( 200, archivos, this.req.headers['accept-encoding'], this.res );
@@ -97,7 +103,7 @@ module.exports = class Imagen {
 	}
 
 	crear( aRuta ) {
-		let archivo, oRuta, cuerpo, nombreArchivo;
+		let archivo, oRuta, cuerpo, nombreArchivo, extArchivo;
 		this.obtenerRutaImagen( aRuta ).then( ( ruta ) => {											// Obtiene ruta completa donde se guardará la imagen y URL
 			oRuta = ruta;
 			return new Promise( ( resuelve, rechaza ) => {
@@ -110,16 +116,24 @@ module.exports = class Imagen {
 			try { cuerpo = JSON.parse( this.req.cuerpo ) }											// Obtiene info del archivo
 			catch ( error ) { throw new modError.ErrorEstado( this.msj.cuerpoNoJson, 400 ) }
 			archivo = cuerpo.archivo;
-			// Verifica tipo de archivo y sanea el nombre
-			// NOTA: La cadena en archivo.tipo no garantiza que el contenido del archivo sea jpg.
-			if ( archivo.tipo === 'image/jpeg' ) {
+			// Verifica tipo de archivo
+			// NOTA: La cadena en archivo.tipo no "garantiza" que el contenido del archivo sea del tipo
+			let imgOk;
+			for ( let img of imgsPermitidas ) {
+				imgOk = archivo.tipo === img.mime;
+				if ( imgOk ) {
+					extArchivo = img.ext;
+					break;
+				}
+			}
+			if ( imgOk ) {
 				let posPunto = archivo.nombre.lastIndexOf('.');
 				nombreArchivo = archivo.nombre.substr( 0, posPunto );
 				nombreArchivo = utiles.cadena2url( nombreArchivo );									// Obtien nombre de archivo saneado y sin extención
 				if ( posPunto > 0 && nombreArchivo !== '' ) {										// Si queda algo del nombre después del saneo
 					// Crea set de imágenes
 					return new Promise( ( resuelve, rechaza ) => {
-						this.crearSetImagenes('tmp/' + archivo.nombreTmp, oRuta.dir + nombreArchivo, ok => {
+						this.crearSetImagenes('tmp/' + archivo.nombreTmp, oRuta.dir + nombreArchivo, extArchivo, ok => {
 							if ( ok ) resuelve( true );
 							else rechaza( new modError.ErrorEstado( this.msj.errorCreandoSetImg, 500 ) );
 						});
@@ -131,7 +145,7 @@ module.exports = class Imagen {
 				throw new modError.ErrorEstado( this.msj.debeSerJpg, 400 );
 			}
 		}).then( () => {
-			respuestas.responder( 200, { url: oRuta.url + nombreArchivo + '.jpg' }, this.req.headers['accept-encoding'], this.res );
+			respuestas.responder( 200, { url: oRuta.url + nombreArchivo + '.' + extArchivo }, this.req.headers['accept-encoding'], this.res );
 			// Elimina archivo temporal
 			fs.unlink('tmp/' + archivo.nombreTmp, ( error ) => {
 				if ( error ) modError.logError( JSON.stringify( error ) );
@@ -235,11 +249,11 @@ module.exports = class Imagen {
 		});
 	}
 
-	crearSetImagenes( origen, destino, callback ) {
+	crearSetImagenes( origen, destino, extension, callback ) {
 		let banderaError = false, contador = conf.setDeImagenes.length;
 		let imagenRedim = ( archivo, archivoNuevo, anchoNuevo, altoNuevo ) => {
 			const { exec } = require('child_process');
-			const cl = `convert ${archivo} -resize ${anchoNuevo}x${altoNuevo}^ -gravity center -extent ${anchoNuevo}x${altoNuevo} ${archivoNuevo}`;
+			const cl = `convert -background none ${archivo} -resize ${anchoNuevo}x${altoNuevo}^ -gravity center -extent ${anchoNuevo}x${altoNuevo} ${archivoNuevo}`;
 			return new Promise( ( resuelve, rechaza ) => {
 				exec( cl, ( error, stdout, stderr ) => {
 					if ( error ) {
@@ -251,7 +265,7 @@ module.exports = class Imagen {
 			});
 		}
 		conf.setDeImagenes.forEach( infoImg => {
-			imagenRedim( origen, destino + infoImg.sufijo + '.jpg', infoImg.ancho, infoImg.alto )	// Crea imagen nueva
+			imagenRedim( origen, destino + infoImg.sufijo + '.' + extension, infoImg.ancho, infoImg.alto )	// Crea imagen nueva
 			.then( ok => {
 				banderaError = !ok ? true : banderaError;
 				contador--;

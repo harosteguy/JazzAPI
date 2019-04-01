@@ -122,9 +122,9 @@ http.createServer( ( req, res ) => {
 		// Agrega idioma saneado de la cabecera accept-language para usar en los servicios
 		req.idioma = conf.setIdiomasApis.includes( req.headers['accept-language'] ) ? req.headers['accept-language'] : conf.setIdiomasApis[0];
 		//
-		if ( esMFD ) {												// La cabeceera content-type de la petición es multipart/form-data
+		if ( esMFD ) {												// La cabecera content-type de la petición es multipart/form-data
+			let mfd = mfdBuffer.slice( 0, mfdBufferIndex );			// Obtiene porción con datos del buffer
 			if ( mfdBufferIndex < ( 2*1024*1024 ) ) {				// Verifica exceso de tamaño del cuerpo
-				let mfd = mfdBuffer.slice( 0, mfdBufferIndex );		// Obtiene porción con datos del buffer
 				let boundary = multipart.getBoundary( req.headers['content-type'] );
 				if ( boundary ) {
 					let partes = multipart.Parse( mfd, boundary );	// Parsea las partes

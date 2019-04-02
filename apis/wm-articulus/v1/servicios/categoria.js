@@ -186,18 +186,21 @@ module.exports = class Categoria {
 			{
 				allowedTags: [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
 					'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
-					'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'iframe', 'img'
+					'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'iframe', 'oembed', 'figure', 'img'
 				],
 				allowedAttributes: {
 					a: [ 'href', 'name', 'target' ],
-					img: [ 'src', 'alt' ]
+					img: [ 'src', 'alt' ],
+					figure: [ 'class' ],
+					div: [ 'data-oembed-url', 'style' ],
+					oembed: [ 'url' ],
+					iframe: [ 'src', 'style', 'frameborder', 'allow', 'allowfullscreen' ]
 				},
 				selfClosing: [ 'img', 'br', 'hr' ],
 				allowedSchemes: [ 'http', 'https', 'ftp', 'mailto' ],
 				allowedSchemesByTag: {},
 				allowedSchemesAppliedToAttributes: [ 'href', 'src', 'cite' ],
-				allowProtocolRelative: true,
-				allowedIframeHostnames: ['www.youtube.com', 'player.vimeo.com']
+				allowProtocolRelative: true
 			}
 		);
 		return datos;

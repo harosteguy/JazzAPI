@@ -201,12 +201,12 @@ module.exports = class Blog {
 			let datos = {};
 			try { datos = JSON.parse( this.req.cuerpo ); }
 			catch ( error ) {
-				rechaza( modError.ErrorEstado( this.msj.cuerpoNoJson, 400 ) );
+				rechaza( new modError.ErrorEstado( this.msj.cuerpoNoJson, 400 ) );
 				return;
 			}
 			datos = this.sanear( datos );
 			if ( datos.nombre === '' || datos.nombreUrl === '' ) {
-				rechaza( modError.ErrorEstado( this.msj.errorNombreBlog, 400 ) );
+				rechaza( new modError.ErrorEstado( this.msj.errorNombreBlog, 400 ) );
 				return;
 			}
 			resuelve( datos );

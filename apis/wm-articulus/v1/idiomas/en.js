@@ -37,7 +37,7 @@ module.exports = {
 
 	errorCreandoSetImg: 'There was some problem creating the set of images.',
 	errorNombreArchivo: 'There is a problem with the file name.',
-	debeSerJpg: 'The file must be a jpg image.',
+	debeSerJpgPng: 'The file must be a jpg or png image.',
 	errorBorrandoSetImg: 'There was some problem eliminating the set of images.',
 	noExisteBlogParaImg: 'There is no section for images.',
 	elArtiOCatNoExiste: 'The article or category does not exist.',

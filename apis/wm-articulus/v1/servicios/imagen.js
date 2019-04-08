@@ -72,9 +72,10 @@ module.exports = class Imagen {
 	}
 
 	listar( aRuta ) {
-		let urlBase;
+		let urlBase, carpetaImg;
 		this.obtenerRutaImagen( aRuta ).then( ( carpeta, url ) => {
 			urlBase = carpeta.url;
+			carpetaImg = carpeta.dir;
 			return new Promise( ( resuelve, rechaza ) => {
 				fs.readdir( carpeta.dir, ( error, archivos ) => {
 					if ( error ) rechaza( error );
@@ -82,6 +83,7 @@ module.exports = class Imagen {
 				});
 			});
 		}).then( archivos => {
+			// Filtra extensiones permitidas
 			let imgOk;
 			let i = archivos.length;
 			while ( i-- ) {
@@ -89,12 +91,22 @@ module.exports = class Imagen {
 					imgOk = archivos[i].substr( -3 ) === img.ext;
 					if ( imgOk ) break;
 				}
-				if ( imgOk ) {
-					archivos[i] = urlBase + archivos[i];	// Agrega protocolo, dominio y ruta al archivo
-				} else {
-					archivos.splice( i, 1 );				// Filtra extensiones permitidas
-				}
+				if ( !imgOk ) archivos.splice( i, 1 );
 			}
+			// Ordena archivos por fecha y hora
+			archivos = archivos.map( archivo => {
+				return {
+					name: archivo,
+					time: fs.statSync( carpetaImg +  archivo ).mtime.getTime()
+				};
+			})
+			.sort( ( a, b ) => b.time - a.time )
+			.map( v => v.name );
+			// Agrega protocolo, dominio y ruta
+			archivos.forEach( ( archivo, i, array ) => {
+				array[i] = urlBase + archivo;
+			});
+			//
 			respuestas.responder( 200, archivos, this.req.headers['accept-encoding'], this.res );
 		}).catch( error => {
 			if ( error.code === 'ENOENT' ) respuestas.responder( 200, [], this.req.headers['accept-encoding'], this.res );	// No hay carpeta con imágenes
@@ -107,7 +119,7 @@ module.exports = class Imagen {
 		this.obtenerRutaImagen( aRuta ).then( ( ruta ) => {											// Obtiene ruta completa donde se guardará la imagen y URL
 			oRuta = ruta;
 			return new Promise( ( resuelve, rechaza ) => {
-				mkdirp( oRuta.dir, error => {														// Crea carpetas necesarias
+				mkdirp( oRuta.dir, error => {												// Crea carpetas necesarias
 					if ( error ) rechaza( error );
 					else resuelve( true );
 				});
@@ -142,7 +154,7 @@ module.exports = class Imagen {
 					throw new modError.ErrorEstado( this.msj.errorNombreArchivo, 400 );
 				}
 			} else {
-				throw new modError.ErrorEstado( this.msj.debeSerJpg, 400 );
+				throw new modError.ErrorEstado( this.msj.debeSerJpgPng, 400 );
 			}
 		}).then( () => {
 			respuestas.responder( 200, { url: oRuta.url + nombreArchivo + '.' + extArchivo }, this.req.headers['accept-encoding'], this.res );
@@ -161,11 +173,14 @@ module.exports = class Imagen {
 
 	borrar( aRuta ) {
 		let oRuta,
-			nombreArchivo = utiles.cadena2url( aRuta[9] || '' );
-		if ( nombreArchivo == '' ) {
+			archivo = aRuta[9] || '';
+		if ( archivo === '' ) {
 			modError.responderError( 400, this.msj.errorNombreArchivo, this.res );
 			return;
 		}
+		let nomArchivo = archivo.substr( 0, archivo.length -4 );
+		let extArchivo = archivo.substr( -4 );
+
 		this.obtenerRutaImagen( aRuta ).then( ( ruta ) => {
 			oRuta = ruta;
 			return new Promise( ( resuelve, rechaza ) => {
@@ -175,8 +190,8 @@ module.exports = class Imagen {
 				});
 			});
 		}).then( archivos => {
-			// Elimina los archivos cuyo nombre empiece con nombreArchivo
-			archivos.filter( nombre => nombreArchivo === nombre.substr( 0, nombreArchivo.length ) )
+			// Elimina los archivos cuyo nombre empiece con nomArchivo y tengan misma extensión que extArchivo
+			archivos.filter( nombre => nomArchivo === nombre.substr( 0, nomArchivo.length ) && extArchivo === nombre.substr( -4 ) )
 			.forEach( archivo => {
 				fs.unlink( oRuta.dir + archivo, error => {
 					if ( error ) modError.logError( JSON.stringify( error ) );
@@ -216,12 +231,8 @@ module.exports = class Imagen {
 					// aRuta[5] es el nombreUrl de un blog existente
 					// Obtiene id de artículo o categoría
 					if ( aRuta[6] === 'articulos' ) {
-
 						let consulta = "select id from blog_articulos where tituloUrl = ? and idBlog = ? limit 1";
-
 						return db.consulta( consulta, [ aRuta[7], resBlog[0].id ] );
-
-
 					} else if ( aRuta[6] === 'categorias' ) {
 						let consulta = "select id from blog_categorias where nombreBase = ? and idBlog = ? limit 1";
 						return db.consulta( consulta, [ aRuta[7], resBlog[0].id ] );

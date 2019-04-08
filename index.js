@@ -48,7 +48,7 @@ let rutearPeticion = ( req, res ) => {
 	if ( aRuta[1] == 'apis') {
 
 //// 
-		if ( ['chorro','wm-chorro','articulus','wm-articulus','usuarios','contacto'].indexOf( aRuta[2] ) !== -1 ) {
+		if ( ['chorro','wm-chorro','articulus','wm-articulus','usuarios','contacto','wm-imagen'].indexOf( aRuta[2] ) !== -1 ) {
 
 			if ( req.method == 'OPTIONS') {		// Responde peticiones preflight
 				res.writeHead( 200, {

@@ -50,7 +50,6 @@ module.exports = {
 		{ ancho: 480, alto: 270, sufijo: '-480' },
 		{ ancho: 960, alto: 540, sufijo: '-960' },
 		{ ancho: 1280, alto: 720, sufijo: '-1280' },
-		{ ancho: 1920, alto: 1080, sufijo: '-1920' },
 		{ ancho: 960, alto: 540, sufijo: '' }
 	],
 	// Imágenes para cabeza y pie de emails. 600px de ancho.

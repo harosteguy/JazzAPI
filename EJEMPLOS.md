@@ -5,9 +5,10 @@ Las peticiones son ejecutadas en un terminal usando curl.
 
 ## APIs
 
-- [API Usuarios](#api-usuarios) Gestión de usuarios.
+- [API Usuarios](#api-usuarios) Gestión de usuarios. Registro, login, imagen, autorización, contraseñas.
 - [API WM Chorro](#api-wm-chorro) Gestión de contenidos multilingües.
 - [API Chorro](#api-chorro) Entrega de contenidos mutilingües.
+- [API WM Imagen](#api-wm-imagen) Gestión de imágenes de uso general.
 - [API WM Articulus](#api-wm-articulus) Gestión de contenidos indexados.
 	- [Blogs](#blogs)
 	- [Autores](#autores)
@@ -266,6 +267,44 @@ curl -H 'Accept-Language: en' \
 	"appAnterior": "Previous"
 }
 ```
+
+---
+## API WM Imagen
+
+Crear set de imágenes. Se pueden usar diferentes carpetas. En el ejemplo se usa "contenidos". En la configuración por defecto también está habilitada la carpeta "banco".
+```
+curl -u 1:a339875fa309813a051799f150753f5d -X POST -H "Content-Type: multipart/form-data" \
+	-F "imagen=@/home/usuario/Escritorio/imagenes/img11.jpg" \
+	http://localhost:6666/apis/wm-imagen/v1/contenidos
+```
+```javascript
+{
+	"url": "/img/banco/img11.jpg"
+}
+```
+
+Obtener lista de URLs de imágenes ordenadas por fecha descendente.
+```
+curl -u 1:a339875fa309813a051799f150753f5d http://localhost:6666/apis/wm-imagen/v1/contenidos
+```
+```javascript
+[
+	"/img/banco/img12-1280.jpg",
+	"/img/banco/img12.jpg",
+	"/img/banco/img12-960.jpg",
+	"/img/banco/img12-480.jpg",
+	"/img/banco/img11-1280.jpg",
+	"/img/banco/img11.jpg",
+	"/img/banco/img11-960.jpg",
+	"/img/banco/img11-480.jpg"
+]
+```
+
+Borrar set de imágenes.
+```
+curl -u 1:a339875fa309813a051799f150753f5d -X DELETE http://localhost:6666/apis/wm-imagen/v1/contenidos/img11.jpg
+```
+Respuesta vacía con código de estado 204 para caso de éxito o mensaje de error.
 
 ---
 ## API WM Articulus
@@ -643,10 +682,10 @@ curl -u 1:a339875fa309813a051799f150753f5d http://localhost:6666/apis/wm-articul
 
 Borrar set de imágenes.
 ```
-curl -u 1:a339875fa309813a051799f150753f5d -X DELETE http://localhost:6666/apis/wm-articulus/v1/blogs/seccion-demo/articulos/titulo-rea/imagenes/img11
+curl -u 1:a339875fa309813a051799f150753f5d -X DELETE http://localhost:6666/apis/wm-articulus/v1/blogs/seccion-demo/articulos/titulo-rea/imagenes/img11.jpg
 ```
 ```
-curl -u 1:a339875fa309813a051799f150753f5d -X DELETE http://localhost:6666/apis/wm-articulus/v1/blogs/seccion-demo/categorias/verde/imagenes/img11
+curl -u 1:a339875fa309813a051799f150753f5d -X DELETE http://localhost:6666/apis/wm-articulus/v1/blogs/seccion-demo/categorias/verde/imagenes/img11.jpg
 ```
 Respuesta vacía con código de estado 204 para caso de éxito o mensaje de error.
 

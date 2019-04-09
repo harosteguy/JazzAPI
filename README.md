@@ -7,6 +7,7 @@ JazzAPI es un grupo de APIs RESTful desarrolladas en Node.js para servir y manej
 - **API Usuarios:** Gestiona usuarios. Registro, login, imagen, autorización, contraseñas.
 - **API WM-Chorro:** Gestiona contenidos en diferentes idiomas.
 - **API Chorro:** Sirve contenidos en un idioma específico. Usa cache en memoria para la entrega de contenidos.
+- **API WM-Imagen** Gestiona imágenes de uso general.
 - **API WM-Articulus:** Gestiona contenidos indexados estilo blog. Secciones, artículos, categorías, autores, imágenes.
 - **API Articulus:** Sirve contenidos indexados estilo blog. Usa cache en memoria para la entrega de contenidos. Incluye sistema de comentarios para usuarios registrados.
 - **API Contacto:** Envía correo electrónico con mensaje de un usuario.
@@ -106,7 +107,6 @@ module.exports = {
 		{ ancho: 480, alto: 270, sufijo: '-480' },
 		{ ancho: 960, alto: 540, sufijo: '-960' },
 		{ ancho: 1280, alto: 720, sufijo: '-1280' },
-		{ ancho: 1920, alto: 1080, sufijo: '-1920' },
 		{ ancho: 960, alto: 540, sufijo: '' }
 	],
 	// Imágenes para cabeza y pie de emails. 600px de ancho.

@@ -53,7 +53,8 @@ CREATE TABLE `blog_categorias` (
   `idBlog` mediumint(7) UNSIGNED NOT NULL,
   `nombre` varchar(100) NOT NULL DEFAULT '',
   `nombreBase` varchar(100) NOT NULL DEFAULT '',
-  `descripcion` mediumtext NOT NULL
+  `descripcion` mediumtext NOT NULL,
+  `imgPrincipal` varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `blog_comentarios` (

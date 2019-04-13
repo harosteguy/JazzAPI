@@ -75,7 +75,7 @@ module.exports = class Categoria {
 	listar( blogBase ) {
 		utiles.obtenerIdBlog( blogBase ).then( idBlog => {
 			let incNumArticulos = url.parse( this.req.url, true ).query.incNumArticulos;
-			let consulta = "select id, nombre, nombreBase";
+			let consulta = "select id, nombre, nombreBase, imgPrincipal";
 			consulta += ( incNumArticulos && parseInt( incNumArticulos, 10 ) === 1 )
 				? ", (select count(*) from blog_arti_cat where idCat = blog_categorias.id) as numArticulos "	// Incluye cantidad de artículos
 				: " ";
@@ -93,7 +93,7 @@ module.exports = class Categoria {
 	obtener( blogBase, catBase ) {
 		utiles.obtenerIdBlog( blogBase ).then( idBlog => {
 			let incNumArticulos = url.parse( this.req.url, true ).query.incNumArticulos;
-			let consulta = "select id, nombre, nombreBase, descripcion";
+			let consulta = "select id, nombre, nombreBase, descripcion, imgPrincipal";
 			consulta += ( incNumArticulos && parseInt( incNumArticulos, 10 ) === 1 )
 				? ", (select count(*) from blog_arti_cat where idCat = blog_categorias.id) as numArticulos "	// Incluye cantidad de artículos
 				: " ";
@@ -203,6 +203,7 @@ module.exports = class Categoria {
 				allowProtocolRelative: true
 			}
 		);
+		datos.imgPrincipal = datos.imgPrincipal ? datos.imgPrincipal : '';
 		return datos;
 	}
 

@@ -74,7 +74,7 @@ module.exports = class Categoria {
 	obtener( blogBase, nombreBase ) {
 		return new Promise( ( resuelve, rechaza ) => {
 			utiles.obtenerIdBlog( blogBase ).then( idBlog => {
-				let consulta = "select id, nombre, nombreBase, descripcion, " +
+				let consulta = "select id, nombre, nombreBase, descripcion, imgPrincipal, " +
 				"(select count(*) from blog_arti_cat where idCat = blog_categorias.id " +
 				"and idArti = (select id from blog_articulos where id = idArti and publicado = 1 limit 1)) as numArticulos " +
 				"from blog_categorias where idBlog = ? and nombreBase = ? limit 1";
@@ -91,7 +91,7 @@ module.exports = class Categoria {
 	listar( blogBase ) {
 		return new Promise( ( resuelve, rechaza ) => {
 			utiles.obtenerIdBlog( blogBase ).then( idBlog => {
-				let consulta = "select id, nombre, nombreBase, descripcion, " +
+				let consulta = "select id, nombre, nombreBase, descripcion, imgPrincipal, " +
 				"(select count(*) from blog_arti_cat where idCat = blog_categorias.id " +
 				"and idArti = (select id from blog_articulos where id = idArti and publicado = 1 limit 1)) as numArticulos " +
 				"from blog_categorias where idBlog = ? order by nombre";

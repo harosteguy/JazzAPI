@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `cms_chorro` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `cms_chorro`;
+CREATE DATABASE IF NOT EXISTS `jazz_chorro` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `jazz_chorro`;
 
 CREATE TABLE `contenidos` (
   `id` varchar(30) NOT NULL DEFAULT '',

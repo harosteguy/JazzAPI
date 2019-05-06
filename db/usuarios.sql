@@ -1,13 +1,13 @@
-CREATE USER 'cms_usr'@'localhost' IDENTIFIED WITH mysql_native_password AS '***';
+CREATE USER 'jazz_usr'@'localhost' IDENTIFIED WITH mysql_native_password AS '***';
 
-GRANT USAGE ON *.* TO 'cms_usr'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON `cms\_articulus`.* TO 'cms_usr'@'localhost';
-GRANT SELECT ON `cms\_chorro`.* TO 'cms_usr'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON `cms\_usuarios`.* TO 'cms_usr'@'localhost';
+GRANT USAGE ON *.* TO 'jazz_usr'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `jazz\_articulus`.* TO 'jazz_usr'@'localhost';
+GRANT SELECT ON `jazz\_chorro`.* TO 'jazz_usr'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `jazz\_usuarios`.* TO 'jazz_usr'@'localhost';
 
-CREATE USER 'cms_wm'@'localhost' IDENTIFIED WITH mysql_native_password AS '***';
+CREATE USER 'jazz_wm'@'localhost' IDENTIFIED WITH mysql_native_password AS '***';
 
-GRANT USAGE ON *.* TO 'cms_wm'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON `cms\_chorro`.* TO 'cms_wm'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON `cms\_articulus`.* TO 'cms_wm'@'localhost';
-GRANT SELECT, INSERT, UPDATE ON `cms\_usuarios`.* TO 'cms_wm'@'localhost';
+GRANT USAGE ON *.* TO 'jazz_wm'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `jazz\_chorro`.* TO 'jazz_wm'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `jazz\_articulus`.* TO 'jazz_wm'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON `jazz\_usuarios`.* TO 'jazz_wm'@'localhost';

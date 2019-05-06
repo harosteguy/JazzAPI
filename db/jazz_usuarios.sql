@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `cms_usuarios` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `cms_usuarios`;
+CREATE DATABASE IF NOT EXISTS `jazz_usuarios` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `jazz_usuarios`;
 
 CREATE TABLE `clave_nueva` (
   `email` varchar(40) NOT NULL DEFAULT '',

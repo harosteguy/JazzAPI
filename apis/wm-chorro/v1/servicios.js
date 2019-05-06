@@ -22,7 +22,7 @@
 
 let conf = require('../../apis-comun/config'),
 	BaseDatos = require('../../apis-comun/base-datos'),
-	db = new BaseDatos( conf.dbHost, conf.dbUserWm, conf.dbPassWm, 'cms_chorro' ),
+	db = new BaseDatos( conf.dbHost, conf.dbUserWm, conf.dbPassWm, 'jazz_chorro' ),
 	fs = require('fs'),
 	zlib = require('zlib'),
 	respuestas = require('../../apis-comun/respuestas'),

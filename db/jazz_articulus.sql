@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `cms_articulus` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `cms_articulus`;
+CREATE DATABASE IF NOT EXISTS `jazz_articulus` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `jazz_articulus`;
 
 CREATE TABLE `blog_articulos` (
   `id` mediumint(7) UNSIGNED NOT NULL,

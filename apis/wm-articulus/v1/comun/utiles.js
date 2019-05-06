@@ -23,7 +23,7 @@
 var fs = require('fs'),
 	conf = require('../../../apis-comun/config'),
 	BaseDatos = require('../../../apis-comun/base-datos'),
-	db = new BaseDatos( conf.dbHost, conf.dbUserWm, conf.dbPassWm, 'cms_articulus' ),
+	db = new BaseDatos( conf.dbHost, conf.dbUserWm, conf.dbPassWm, 'jazz_articulus' ),
 	modError = require('../../../apis-comun/error');
 
 module.exports = {

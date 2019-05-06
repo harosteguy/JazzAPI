@@ -22,7 +22,7 @@ module.exports = {
 	marca: 'Tu Marca',
 	urlBase: 'https://tumarca.com',
 	// Idiomas de contenidos (el primero es idioma por defecto)
-	// Debe reflejar los campos de idioma de la tabla contenidos en la base de datos cms_chorro
+	// Debe reflejar los campos de idioma de la tabla contenidos en la base de datos jazz_chorro
 	setIdiomas: ['es', 'en'],
 	// Idiomas en los que responden las apis (aviso, mensajes de error, etc.) de acuerdo 
 	// con la cabecera accept-language de las peticiones
@@ -31,10 +31,10 @@ module.exports = {
 	// Host del servidor MySQL
 	dbHost: 'localhost',
 	// Usuario MySQL
-	dbUser: 'cms_usr',
+	dbUser: 'jazz_usr',
 	dbPass: 'Contraseña de usuario aquí',
 	// Usuario MySQL para tareas de gestión
-	dbUserWm: 'cms_wm',
+	dbUserWm: 'jazz_wm',
 	dbPassWm: 'Contraseña de webmaster aquí',
 	// Puerto donde se sirven las APIs
 	puertoHttp: 6666,

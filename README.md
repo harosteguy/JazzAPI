@@ -48,16 +48,16 @@ Durante la instalación se crea la carpeta "logs" donde se creará acceso.log y 
 ### Bases de datos
 En la carpeta JazzAPI/db se encuentran los siguientes archivos para crear las bases de datos y usuarios en el servidor MySQL:
 
-- **cms_articulus.sql**
+- **jazz_articulus.sql**
 Base de datos para la API Articulus.
-- **cms_chorro.sql**
+- **jazz_chorro.sql**
 Base de datos para la API Chorro.
-- **cms_chorro_data.sql (opcional)**
+- **jazz_chorro_data.sql (opcional)**
 Datos para la API Chorro.
-- **cms_usuarios.sql**
+- **jazz_usuarios.sql**
 Base de datos para la API Usuarios.
-- **cms_usuarios_data.sql**
-En cms_usuarios_data.sql se encuentra el registro del usuario administrador de las APIs.
+- **jazz_usuarios_data.sql**
+En jazz_usuarios_data.sql se encuentra el registro del usuario administrador de las APIs.
 Se debe poner un correo electrónico real para uso posterior.
 La contraseña por defecto es 'qwerty'. Se puede cambiar en cualquier momento usando la API Usuarios
 - **usuarios.sql**
@@ -67,7 +67,7 @@ En usuarios_claves.sql se crean las contraseñas para los dos usuarios de las ba
 Se deben poner dos contraseñas seguras. Las mismas contraseñas se deben poner luego en el archivo de configuración de las APIs.
 
 Luego de editar los archivos, para hacer la instalación, use en un terminal el siguiente comando con cada archivo.
-`mysql -u root -p < cms_articulus.sql`
+`mysql -u root -p < jazz_articulus.sql`
 
 ---
 ## Configuración
@@ -79,7 +79,7 @@ module.exports = {
 	marca: 'Tu Marca',
 	urlBase: 'https://tumarca.com',
 	// Idiomas de contenidos (el primero es idioma por defecto)
-	// Debe reflejar los campos de idioma de la tabla contenidos en la base de datos cms_chorro
+	// Debe reflejar los campos de idioma de la tabla contenidos en la base de datos jazz_chorro
 	setIdiomas: ['es', 'en'],
 	// Idiomas en los que responden las apis (aviso, mensajes de error, etc.) de acuerdo 
 	// con la cabecera accept-language de las peticiones
@@ -88,10 +88,10 @@ module.exports = {
 	// Host del servidor MySQL
 	dbHost: 'localhost',
 	// Usuario MySQL
-	dbUser: 'cms_usr',
+	dbUser: 'jazz_usr',
 	dbPass: 'Contraseña de usuario aquí',
 	// Usuario MySQL para tareas de gestión
-	dbUserWm: 'cms_wm',
+	dbUserWm: 'jazz_wm',
 	dbPassWm: 'Contraseña de webmaster aquí',
 	// Puerto donde se sirven las APIs
 	puertoHttp: 6666,

@@ -42,7 +42,7 @@ module.exports = {
 	maxArtisRespuesta: 100,
 	artisResDefecto: 20,
 	// Carpeta para las imágenes de la aplicación
-	dirBaseImagen: require('path').join(__dirname, '../../../JazzApp/app/img/'),
+	dirBaseImagen: require('path').join(__dirname, '../../../JazzCMS/app/img/'),
 	// URL para las imágenes de la aplicación
 	urlBaseImagen: '/img/',
 	// Set de imágenes que se crea partiendo de cada imagen subida para artículos, categorías...

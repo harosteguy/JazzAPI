@@ -201,13 +201,16 @@ class Imagen {
         })
       })
     }).then(archivos => {
-      // Elimina los archivos cuyo nombre empiece con nomArchivo y tengan misma extensión que extArchivo
-      archivos.filter(nombre => nomArchivo === nombre.substr(0, nomArchivo.length) && extArchivo === nombre.substr(-4))
-        .forEach(archivo => {
-          fs.unlink(oRuta.dir + archivo, error => {
-            if (error) modError.logError(JSON.stringify(error))
-          })
+      // Elimina los archivos del set de imágenes
+      archivos.forEach(archivo => {
+        conf.setDeImagenes.forEach(infoImg => {
+          if (archivo === nomArchivo + infoImg.sufijo + extArchivo) {
+            fs.unlink(oRuta.dir + archivo, error => {
+              if (error) modError.logError(JSON.stringify(error))
+            })
+          }
         })
+      })
       respuestas.responder(204, {}, this.req.headers['accept-encoding'], this.res)
     }).catch(error => {
       if (error.code === 'ENOENT') { // Si la carpeta no existe

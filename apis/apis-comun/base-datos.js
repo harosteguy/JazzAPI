@@ -18,40 +18,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-let mysql = require('mysql');
+let mysql = require('mysql')
 
 module.exports = class BaseDatos {
+  constructor (dbHost, dbUser, dbPass, dbDatabase) {
+    this.pool = mysql.createPool({
+      connectionLimit: 100,
+      host: dbHost,
+      user: dbUser,
+      password: dbPass,
+      database: dbDatabase,
+      dateStrings: true
+    })
+  }
 
-	constructor( dbHost, dbUser, dbPass, dbDatabase ) {
-		this.pool = mysql.createPool({
-			connectionLimit : 100,
-			host: dbHost,
-			user: dbUser,
-			password: dbPass,
-			database: dbDatabase,
-			dateStrings: true
-		});
-	}
+  conexion () {
+    return new Promise((resolve, reject) => {
+      this.pool.getConnection((error, conexion) => {
+        if (error) reject(error)
+        else resolve(conexion)
+      })
+    })
+  }
 
-	conexion() {
-		return new Promise( ( resuelve, rechaza ) => {
-			this.pool.getConnection( ( error, conexion ) => {
-				if ( error ) rechaza( error );
-				else resuelve( conexion );
-			});
-		});
-	}
-
-	consulta( consulta, parametros ) {
-		return new Promise( ( resuelve, rechaza ) => {
-			this.conexion().then( con => {
-				con.query( consulta, parametros, ( error, resultado ) => {
-					con.release();
-					if ( error ) rechaza( error );
-					else resuelve( resultado );
-				});
-			}).catch( error => { rechaza( error ) } );
-		});
-	}
-
-};
+  consulta (consulta, parametros) {
+    return new Promise((resolve, reject) => {
+      this.conexion().then(con => {
+        con.query(consulta, parametros, (error, resultado) => {
+          con.release()
+          if (error) reject(error)
+          else resolve(resultado)
+        })
+      }).catch(error => { reject(error) })
+    })
+  }
+}

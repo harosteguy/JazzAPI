@@ -34,6 +34,7 @@ module.exports = class Usuario {
   constructor (req, res) {
     this.req = req
     this.res = res
+    this.vigenciaToken = 14400 // 4 horas en segundos
     // Expresión regular de Chromium
     this.emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     this.msj = require('./idiomas/' + req.idioma)
@@ -230,10 +231,11 @@ module.exports = class Usuario {
         if (resul.length === 0) throw new Error(this.msj.tokenNoExiste)
         usr = resul[0]
         usr.token = crypto.randomBytes(16).toString('hex') // Genera token de usuario
-        let fechaAlta = (new Date()).toISOString().slice(0, 10) // Fecha formato mysql date
-        // Agrega datos de pre-registro a tabla de usuarios junto con token de usuario
-        let consulta = 'insert into usuarios (email, clave, token, nombre, apellido, alta) values (?,?,?,?,?,?)'
-        let params = [usr.email, usr.clave, usr.token, usr.nombre, usr.apellido, fechaAlta]
+        usr.vigenciaToken = parseInt((new Date()).getTime() / 1000, 10) + this.vigenciaToken
+        usr.fechaAlta = (new Date()).toISOString().slice(0, 10) // Fecha formato mysql date
+        // Agrega datos de pre-registro a tabla de usuarios junto con token de usuario y su vigencia
+        let consulta = 'insert into usuarios (email, clave, token, vigenciaToken, nombre, apellido, alta) values (?,?,?,?,?,?,?)'
+        let params = [usr.email, usr.clave, usr.token, usr.vigenciaToken, usr.nombre, usr.apellido, usr.fechaAlta]
         return db.consulta(consulta, params)
       })
       .then(resul => {
@@ -420,19 +422,25 @@ module.exports = class Usuario {
 
   usrOk () {
     return new Promise((resolve, reject) => {
-      let cred
+      let cred,res
       if (!(cred = this.credenciales(this.req))) {
         reject(new modError.ErrorEstado(this.msj.usrNoAutori, 403))
         return
       }
-      db.consulta('select id, token, nombre, apellido, esAdmin from usuarios where id = ? limit 1', [cred.uid])
+      db.consulta('select id, token, vigenciaToken, nombre, apellido, esAdmin from usuarios where id = ? limit 1', [cred.uid])
         .then(resul => {
-          // Verifica existencia del uid y coincidencia con el token
-          if (resul.length === 0 || resul[0].token !== cred.token) {
+          res = resul
+          // Verifica existencia del uid y coincidencia con el token y su vigencia
+          let ahora = parseInt((new Date()).getTime() / 1000, 10)
+          if (res.length === 0 || res[0].token !== cred.token || res[0].vigenciaToken < ahora) {
             reject(new modError.ErrorEstado(this.msj.usrNoAutori, 403))
             return
           }
-          resolve({ id: resul[0].id, nombre: resul[0].nombre, apellido: resul[0].apellido, esAdmin: resul[0].esAdmin })
+          // Actualiza vigencia del token
+          let vigenciaToken = ahora + this.vigenciaToken
+          return db.consulta('update usuarios set vigenciaToken = ? where id = ? limit 1', [vigenciaToken, cred.uid])
+        }).then(() => {
+          resolve({ id: res[0].id, nombre: res[0].nombre, apellido: res[0].apellido, esAdmin: res[0].esAdmin })
         }).catch(() => {
           reject(new modError.ErrorEstado(this.msj.usrNoAutori, 403))
         })
@@ -482,7 +490,8 @@ module.exports = class Usuario {
     return new Promise((resolve, reject) => {
       // Crea y guarda token en la tabla de usuario
       let token = crypto.randomBytes(16).toString('hex')
-      db.consulta('update usuarios set token = ? where id = ? limit 1', [token, uid])
+      let vigenciaToken = parseInt((new Date()).getTime() / 1000, 10) + this.vigenciaToken
+      db.consulta('update usuarios set token = ?, vigenciaToken = ? where id = ? limit 1', [token, vigenciaToken, uid])
         .then(() => {
           resolve(token)
         }).catch(() => {

@@ -12,6 +12,7 @@ CREATE TABLE `usuarios` (
   `email` varchar(40) NOT NULL DEFAULT '',
   `clave` varchar(32) NOT NULL DEFAULT '',
   `token` char(32) NOT NULL DEFAULT '',
+  `vigenciaToken` int(11) UNSIGNED NOT NULL DEFAULT '0',
   `esAdmin` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
   `nombre` varchar(20) NOT NULL DEFAULT '',
   `apellido` varchar(40) NOT NULL DEFAULT '',

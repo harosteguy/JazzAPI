@@ -1,5 +1,16 @@
 # JazzAPI - Registro de cambios
 
+## v1.2.0 (2019-06-23)
+
+#### Agregados
+
+- Se agrega el campo imgPrincipal (para usar un URL) a las categorías de artículo.
+- Se mejora la seguridad dándole una vigencia al token de usuario. Por defecto 4 horas después de la última interacción.
+
+#### Correcciones
+
+- Corrección de error en borrado de un set de imágenes.
+
 ## v1.1.0 (2019-04-09)
 
 #### Agregados
@@ -10,7 +21,7 @@
 
 #### Correcciones
 
-- Un par de correcciones menores
+- Un par de correcciones menores.
 
 ## v1.0.1 (2019-03-15)
 

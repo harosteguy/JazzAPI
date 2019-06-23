@@ -35,6 +35,7 @@ Para comprimir la respuesta se puede usar gzip o deflate en "Accept-Encoding".
 ## API Usuarios
 
 Obtener un token de usuario para identificarse en las peticiones.
+Por defecto el token tiene una vigencia de 4 horas después de la última verificación de validez.
 ```
 curl -u admin@abc.def:qwerty http://localhost:6666/apis/usuarios/v1/token
 ```
@@ -460,6 +461,7 @@ curl -u 1:a339875fa309813a051799f150753f5d http://localhost:6666/apis/wm-articul
 	"nombre": "Verde",
 	"nombreBase": "verde",
 	"descripcion": "",
+	"imgPrincipal": "",
 	"numArticulos": 0
 }
 ```
@@ -477,6 +479,7 @@ curl -u 1:a339875fa309813a051799f150753f5d http://localhost:6666/apis/wm-articul
 		"id": 1,
 		"nombre": "Verde",
 		"nombreBase": "verde",
+		"imgPrincipal": "",
 		"numArticulos": 0
 	}
 ]
@@ -705,6 +708,40 @@ curl http://localhost:6666/apis/articulus/v1/blogs
 			"descripcion": "Esta es la Sección Demo"
 		}
 	]
+}
+```
+
+Obtener lista de categorías de un blog.
+```
+curl http://localhost:6666/apis/articulus/v1/blogs/seccion-demo/categorias
+```
+```javascript
+{
+	"categorias":[
+		{
+			"id":1,
+			"nombre":"Verde",
+			"nombreBase":"verde",
+			"descripcion":"",
+			"imgPrincipal":"",
+			"numArticulos":1
+		}
+	]
+}
+```
+
+Obtener una categoría.
+```
+curl http://localhost:6666/apis/articulus/v1/blogs/seccion-demo/categorias/verde
+```
+```javascript
+{
+	"id":1,
+	"nombre":"Verde",
+	"nombreBase":"verde",
+	"descripcion":"",
+	"imgPrincipal":"",
+	"numArticulos":1
 }
 ```
 

@@ -376,20 +376,20 @@ module.exports = class Usuario {
     let email, usr
     db.consulta('select email from clave_nueva where token = ? limit 1', [entrada.token])
       .then(resul => {
-        if (resul.length === 0) throw new Error(this.msj.tokenNoExiste)
+        if (resul.length === 0) throw new modError.ErrorEstado(this.msj.tokenNoExiste, 404)
         email = resul[0].email
         let clave = crypto.createHash('md5').update(entrada.clave1).digest('hex') // Encripta clave
         // Actualiza clave
         return db.consulta('update usuarios set clave = ? where email = ? limit 1', [clave, email])
       }).then(resul => {
-        if (resul.affectedRows === 0) throw new Error(this.msj.errActualiClaves)
+        if (resul.affectedRows === 0) throw new modError.ErrorEstado(this.msj.errActualiClaves, 500)
         // Elimina el registro de recuperación de clave
         db.consulta('delete from clave_nueva where token = ? limit 1', [entrada.token])
           .catch(() => { modError.logError('Error eliminando registro de recuperación de contraseña.') })
         // Recupera datos para respuesta
         return db.consulta('select id, nombre, apellido, esAdmin from usuarios where email = ? limit 1', [email])
       }).then(resul => {
-        if (resul.length === 0) throw new Error(this.msj.errRecupeDatos)
+        if (resul.length === 0) throw new modError.ErrorEstado(this.msj.errRecupeDatos, 500)
         usr = resul[0]
         return this.crearToken(usr.id)
       }).then(token => {

@@ -369,7 +369,7 @@ module.exports = class Usuario {
     entrada.clave1 = entrada.clave1 || ''
     entrada.clave2 = entrada.clave2 || ''
     if (entrada.clave1 === '' || entrada.clave2 === '' || entrada.clave1 !== entrada.clave2) {
-      modError.responderError(400, this.msj.clavesNoIgualesOVacias)
+      modError.responderError(400, this.msj.clavesNoIgualesOVacias, this.res)
       return
     }
     // Busca email del usuario con el token

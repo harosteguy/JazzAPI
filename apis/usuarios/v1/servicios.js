@@ -168,18 +168,22 @@ module.exports = class Usuario {
       return db.consulta(consulta, params)
     }).then(resul => {
       if (resul.affectedRows === 0) throw new modError.ErrorEstado(this.msj.errGuardandoDatos, 500)
+      // Obtiene URL para href del enlace en el correo
+      // Para que este servicio funcione bien en peticiones de origen cruzado se compone el enlace con información de los headers
+      let url = require('url')
+      let href = url.parse(this.req.headers.origin || this.req.headers.referer)
+      let hrefConfirm = href.protocol + '//' + href.hostname + '/' + this.req.idioma + '/usuario/registro/confirmacion/' + token
       // Envía correo
       // Crea objeto transporte reusable usando SMTP transport por defecto
       /*
       let transporte = nodemailer.createTransport({
         host: 'smtp.ethereal.email',
         port: 587,
-        secure: false, // true for 465, false for other ports
         auth: {
-          user: 'ruj2aqaczpqva5du@ethereal.email',
-          pass: 'Ch6BuHGN256Al8PNNq'
+          user: 'celestine.feeney27@ethereal.email',
+          pass: 'UtF4uvNdBarYucnXBh'
         }
-      });
+      })
       */
       let transporte = nodemailer.createTransport({
         service: 'gmail',
@@ -198,15 +202,15 @@ module.exports = class Usuario {
         to: usr.email,
         subject: `${conf.marca} - ${this.msj.registro}`
       }
-      correo.text = `${usr.nombre} ${usr.apellido},\n${this.msj.mailPreRegistro}\n\n${conf.urlBase}/registro/confirmacion/${token}`
+      correo.text = `${usr.nombre} ${usr.apellido},\n${this.msj.mailPreRegistro}\n\n${hrefConfirm}`
       correo.html = `${this.mailHtmlCabeza}${usr.nombre} ${usr.apellido},<br>${this.msj.mailPreRegistro}<br><br>
-      <a href="${conf.urlBase}/registro/confirmacion/${token}">${conf.urlBase}/registro/confirmacion/${token}</a>${this.mailHtmlPie}`
+      <a href="${hrefConfirm}">${hrefConfirm}</a>${this.mailHtmlPie}`
       // Envía correo con el objeto transporte
       return transporte.sendMail(correo)
     }).then(info => {
       respuestas.responder(200, { nombre: usr.nombre, apellido: usr.apellido, email: usr.email }, this.req.headers['accept-encoding'], this.res)
       // Vista previa disponible cuando se envía a travéz de una cuenta Ethereal
-      // console.log('URL de vista previa: %s', nodemailer.getTestMessageUrl(info));
+      // console.log('URL de vista previa: %s', nodemailer.getTestMessageUrl(info))
     }).catch(error => {
       modError.manejarError(error, this.msj.errRegistrando, this.res)
     })
@@ -332,13 +336,12 @@ module.exports = class Usuario {
         // Envía correo
         // Crea objeto transporte reusable usando SMTP transport por defecto
         /*
-        let transporte = nodemailer.createTransport({
+        const transporte = nodemailer.createTransport({
           host: 'smtp.ethereal.email',
           port: 587,
-          secure: false, // true for 465, false for other ports
           auth: {
-            user: 'ruj2aqacqtava5du@ethereal.email',
-            pass: 'Ch6BuXBN256Ak8PNNq'
+            user: 'celestine.feeney27@ethereal.email',
+            pass: 'UtF4uvNdBarYucnXBh'
           }
         })
         */
@@ -359,7 +362,7 @@ module.exports = class Usuario {
           to: usr.email,
           subject: `${conf.marca} - ${this.msj.recuperarPass}`
         }
-        correo.text = `${usr.nombre} ${usr.apellido},\n${this.msj.paraNuevaClaveEntraEn}\n\n${conf.urlBase}/clave/confirmacion/${token}`
+        correo.text = `${usr.nombre} ${usr.apellido},\n${this.msj.paraNuevaClaveEntraEn}\n\n${hrefClaves}`
         correo.html = `${this.mailHtmlCabeza}${usr.nombre} ${usr.apellido},<br>${this.msj.paraNuevaClaveEntraEn}<br><br>
       <a href="${hrefClaves}">${hrefClaves}</a>${this.mailHtmlPie}`
         // Envía correo con el objeto transporte

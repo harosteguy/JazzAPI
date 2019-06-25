@@ -310,19 +310,38 @@ module.exports = class Usuario {
         return db.consulta('insert into clave_nueva (email, token, tiempo) values (?,?,?)', [entrada.email, token, ahora])
       }).then(resul => {
         if (resul.affectedRows === 0) throw new modError.ErrorEstado(this.msj.errGuardandoDatos, 500)
+        // Obtiene URL para href del enlace en el correo
+        // Para que este servicio funcione bien en peticiones de origen cruzado se compone el enlace con información de los headers
+        let url = require('url')
+        let href = url.parse(this.req.headers.origin || this.req.headers.referer)
+        let hrefClaves = href.protocol + '//' + href.hostname + '/' + this.req.idioma + '/'
+        // Si la primera carpeta del path es "wm" (o la segunda cuando hay idioma) la petición se hace desde JazzCMS
+        // entonces se agrega la carpeta al path del enlace
+        if (this.req.headers.referer) {
+          let ruta = url.parse(this.req.headers.referer).pathname
+          if (ruta) {
+            let carpetas = ruta.split('/')
+            if (carpetas[1] === 'wm' || carpetas[2] === 'wm') { // El elemento 0 está vacío porque la cadena empieza con '/'
+              hrefClaves += 'wm/'
+            }
+          }
+        }
+        //
+        hrefClaves += 'usuario/clave/nueva/' + token
+        //
         // Envía correo
         // Crea objeto transporte reusable usando SMTP transport por defecto
         /*
-      let transporte = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: 'ruj2aqacqtava5du@ethereal.email',
-          pass: 'Ch6BuXBN256Ak8PNNq'
-        }
-      });
-      */
+        let transporte = nodemailer.createTransport({
+          host: 'smtp.ethereal.email',
+          port: 587,
+          secure: false, // true for 465, false for other ports
+          auth: {
+            user: 'ruj2aqacqtava5du@ethereal.email',
+            pass: 'Ch6BuXBN256Ak8PNNq'
+          }
+        })
+        */
         let transporte = nodemailer.createTransport({
           service: 'gmail',
           port: 443,
@@ -342,7 +361,7 @@ module.exports = class Usuario {
         }
         correo.text = `${usr.nombre} ${usr.apellido},\n${this.msj.paraNuevaClaveEntraEn}\n\n${conf.urlBase}/clave/confirmacion/${token}`
         correo.html = `${this.mailHtmlCabeza}${usr.nombre} ${usr.apellido},<br>${this.msj.paraNuevaClaveEntraEn}<br><br>
-      <a href="${conf.urlBase}/clave/confirmacion/${token}">${conf.urlBase}/clave/confirmacion/${token}</a>${this.mailHtmlPie}`
+      <a href="${hrefClaves}">${hrefClaves}</a>${this.mailHtmlPie}`
         // Envía correo con el objeto transporte
         return transporte.sendMail(correo)
       }).then(info => {

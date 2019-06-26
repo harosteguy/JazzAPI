@@ -44,9 +44,9 @@ module.exports = class Usuario {
 <body style="margin: 0; padding: 0;">
 <table border="0" cellpadding="1" cellspacing="0" width="100%"><tr><td>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
-<tr><td><img src="${conf.imgMailHtmlTop}" alt="${conf.marca}" width="600" style="display: block;" /></td></tr>
+<tr><td><img src="${conf.imgMailHtmlTop}" width="600" style="display: block;" /></td></tr>
 <tr><td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px; font-size: 15px;">`
-    this.mailHtmlPie = `</td></tr><tr><td><img src="${conf.imgMailHtmlBottom}" alt="${conf.marca}" width="600" style="display: block;" /></td></tr></table></td></tr></table></body></html>`
+    this.mailHtmlPie = `</td></tr><tr><td><img src="${conf.imgMailHtmlBottom}" width="600" style="display: block;" /></td></tr></table></td></tr></table></body></html>`
   }
 
   // Recibe en Authorization email y contraseña
@@ -198,9 +198,9 @@ module.exports = class Usuario {
       })
       // Datos del correo
       let correo = {
-        from: `"${conf.marca}" <${conf.gmailEmisor}>`,
+        from: conf.gmailEmisor,
         to: usr.email,
-        subject: `${conf.marca} - ${this.msj.registro}`
+        subject: this.msj.registro
       }
       correo.text = `${usr.nombre} ${usr.apellido},\n${this.msj.mailPreRegistro}\n\n${hrefConfirm}`
       correo.html = `${this.mailHtmlCabeza}${usr.nombre} ${usr.apellido},<br>${this.msj.mailPreRegistro}<br><br>
@@ -358,9 +358,9 @@ module.exports = class Usuario {
         })
         // Datos del correo
         let correo = {
-          from: `"${conf.marca}" <${conf.gmailEmisor}>`,
+          from: conf.gmailEmisor,
           to: usr.email,
-          subject: `${conf.marca} - ${this.msj.recuperarPass}`
+          subject: this.msj.recuperarPass
         }
         correo.text = `${usr.nombre} ${usr.apellido},\n${this.msj.paraNuevaClaveEntraEn}\n\n${hrefClaves}`
         correo.html = `${this.mailHtmlCabeza}${usr.nombre} ${usr.apellido},<br>${this.msj.paraNuevaClaveEntraEn}<br><br>

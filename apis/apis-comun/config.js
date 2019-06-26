@@ -19,8 +19,6 @@
  */
 
 module.exports = {
-  marca: 'Tu Marca',
-  urlBase: 'https://tumarca.com',
   // Idiomas de contenidos (el primero es idioma por defecto)
   // Debe reflejar los campos de idioma de la tabla contenidos en la base de datos jazz_chorro
   setIdiomas: ['es', 'en'],
@@ -53,8 +51,8 @@ module.exports = {
     { ancho: 960, alto: 540, sufijo: '' }
   ],
   // Imágenes para cabeza y pie de emails. 600px de ancho.
-  imgMailHtmlTop: 'https://tumarca.com/interfaz/img/imgMailHtmlCabeza.jpg',
-  imgMailHtmlBottom: 'https://tumarca.com/interfaz/img/imgMailHtmlPie.jpg',
+  imgMailHtmlTop: 'https://example.com/interfaz/img/imgMailHtmlCabeza.jpg',
+  imgMailHtmlBottom: 'https://example.com/interfaz/img/imgMailHtmlPie.jpg',
   // API Contacto y Usuarios. Ver cómo configurar gmail en https://nodemailer.com/usage/using-gmail/
   gmailEmisor: 'correo.emisor@gmail.com',
   gmailPass: 'contraseña de correo.emisor@gmail.com',

@@ -16,8 +16,8 @@ JazzAPI es un grupo de APIs RESTful desarrolladas en Node.js para servir y manej
 
 - [Pre requisitos](#pre-requisitos)
 - [Instalación](#instalación)
-	- [APIs](#apis)
-	- [Bases de datos](#bases-de-datos)
+  - [APIs](#apis)
+  - [Bases de datos](#bases-de-datos)
 - [Configuración](#configuración)
 - [Uso](#uso)
 - [Licencia](#licencia)
@@ -76,46 +76,44 @@ En la carpeta JazzAPI/apis/apis-comun se encuentra el archivo config.js donde se
 
 ```javascript
 module.exports = {
-	marca: 'Tu Marca',
-	urlBase: 'https://tumarca.com',
-	// Idiomas de contenidos (el primero es idioma por defecto)
-	// Debe reflejar los campos de idioma de la tabla contenidos en la base de datos jazz_chorro
-	setIdiomas: ['es', 'en'],
-	// Idiomas en los que responden las apis (aviso, mensajes de error, etc.) de acuerdo 
-	// con la cabecera accept-language de las peticiones
-	// Debe mantener una coherencia con los archivos de idioma de las APIs
-	setIdiomasApis: ['es', 'en'],
-	// Host del servidor MySQL
-	dbHost: 'localhost',
-	// Usuario MySQL
-	dbUser: 'jazz_usr',
-	dbPass: 'Contraseña de usuario aquí',
-	// Usuario MySQL para tareas de gestión
-	dbUserWm: 'jazz_wm',
-	dbPassWm: 'Contraseña de webmaster aquí',
-	// Puerto donde se sirven las APIs
-	puertoHttp: 6666,
-	// Cantidad de artículos en las respuestas de la API Articulus
-	maxArtisRespuesta: 100,
-	artisResDefecto: 20,
-	// Carpeta para las imágenes de la aplicación
-	dirBaseImagen: require('path').join(__dirname, '../../../JazzApp/app/publico/img/'),
-	// URL para las imágenes de la aplicación
-	urlBaseImagen: '/img/',
-	// Set de imágenes que se crea partiendo de cada imagen subida para artículos, categorías...
-	setDeImagenes: [
-		{ ancho: 480, alto: 270, sufijo: '-480' },
-		{ ancho: 960, alto: 540, sufijo: '-960' },
-		{ ancho: 1280, alto: 720, sufijo: '-1280' },
-		{ ancho: 960, alto: 540, sufijo: '' }
-	],
-	// Imágenes para cabeza y pie de emails. 600px de ancho.
-	imgMailHtmlTop: 'https://tumarca.com/interfaz/img/imgMailHtmlCabeza.jpg',
-	imgMailHtmlBottom: 'https://tumarca.com/interfaz/img/imgMailHtmlPie.jpg',
-	// API Contacto y Usuarios. Ver cómo configurar gmail en https://nodemailer.com/usage/using-gmail/
-	gmailEmisor: 'correo.emisor@gmail.com',
-	gmailPass: 'contraseña de correo.emisor@gmail.com',
-	correoReceptor: 'contacto@qwertyu.iop',
+  // Idiomas de contenidos (el primero es idioma por defecto)
+  // Debe reflejar los campos de idioma de la tabla contenidos en la base de datos jazz_chorro
+  setIdiomas: ['es', 'en'],
+  // Idiomas en los que responden las apis (aviso, mensajes de error, etc.) de acuerdo 
+  // con la cabecera accept-language de las peticiones
+  // Debe mantener una coherencia con los archivos de idioma de las APIs
+  setIdiomasApis: ['es', 'en'],
+  // Host del servidor MySQL
+  dbHost: 'localhost',
+  // Usuario MySQL
+  dbUser: 'jazz_usr',
+  dbPass: 'Contraseña de usuario aquí',
+  // Usuario MySQL para tareas de gestión
+  dbUserWm: 'jazz_wm',
+  dbPassWm: 'Contraseña de webmaster aquí',
+  // Puerto donde se sirven las APIs
+  puertoHttp: 6666,
+  // Cantidad de artículos en las respuestas de la API Articulus
+  maxArtisRespuesta: 100,
+  artisResDefecto: 20,
+  // Carpeta para las imágenes de la aplicación
+  dirBaseImagen: require('path').join(__dirname, '../../../JazzApp/app/publico/img/'),
+  // URL para las imágenes de la aplicación
+  urlBaseImagen: '/img/',
+  // Set de imágenes que se crea partiendo de cada imagen subida para artículos, categorías...
+  setDeImagenes: [
+    { ancho: 480, alto: 270, sufijo: '-480' },
+    { ancho: 960, alto: 540, sufijo: '-960' },
+    { ancho: 1280, alto: 720, sufijo: '-1280' },
+    { ancho: 960, alto: 540, sufijo: '' }
+  ],
+  // Imágenes para cabeza y pie de emails. 600px de ancho.
+  imgMailHtmlTop: 'https://example.com/interfaz/img/imgMailHtmlCabeza.jpg',
+  imgMailHtmlBottom: 'https://example.com/interfaz/img/imgMailHtmlPie.jpg',
+  // API Contacto y Usuarios. Ver cómo configurar gmail en https://nodemailer.com/usage/using-gmail/
+  gmailEmisor: 'correo.emisor@gmail.com',
+  gmailPass: 'contraseña de correo.emisor@gmail.com',
+  correoReceptor: 'contacto@qwertyu.iop',
 }
 ```
 

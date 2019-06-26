@@ -6,7 +6,7 @@ module.exports = {
   errGuardandoDatos: 'Error saving data.',
   faltaNombre: 'The name is missing.',
   faltaApellido: 'The last name is missing.',
-  errCorreo: 'There is a problem with email..',
+  errCorreo: 'There is a problem with email.',
   clavesNoIgualesOVacias: 'The passwords are not the same or are empty.',
   errCreandoToken: 'Error creating token.',
   tokenNoValido: 'The token is not valid.',

@@ -51,13 +51,13 @@ module.exports = class Articulo {
       if (cache && contenido.disponible) {
         // Responde petición desde cache
         contenido.datos.cache = 1
-        respuestas.responder(200, contenido.datos, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, contenido.datos, this.res)
       } else {
         // Responde petición desde base de datos
         if (aRuta[7]) { // aRuta[7] Nombre base del artículo
           this.obtener(aRuta[5], aRuta[7], urlQuery).then(respuesta => { // aRuta[5] Nombre base del blog
             respuesta.cache = 0
-            respuestas.responder(200, respuesta, this.req.headers['accept-encoding'], this.res)
+            respuestas.responder(200, respuesta, this.res)
             mCache.cachear(idContenido, respuesta).catch(error => { // Cachea la respuesta
               modError.logError(error.name + ' ' + error.message + '\n' + error.stack)
             })
@@ -65,7 +65,7 @@ module.exports = class Articulo {
         } else {
           this.listar(aRuta[5], urlQuery).then(respuesta => {
             respuesta.cache = 0
-            respuestas.responder(200, respuesta, this.req.headers['accept-encoding'], this.res)
+            respuestas.responder(200, respuesta, this.res)
             mCache.cachear(idContenido, respuesta).catch(error => {
               modError.logError(error.name + ' ' + error.message + '\n' + error.stack)
             })

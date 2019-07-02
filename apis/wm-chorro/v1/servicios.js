@@ -43,7 +43,7 @@ module.exports = class Contenidos {
         listaIds.push(resultado[i].id)
       }
       if (listaIds.length > 0) {
-        respuestas.responder(200, listaIds, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, listaIds, this.res)
       } else {
         modError.responderError(404, this.msj.noHayContenidos, this.res)
       }
@@ -53,7 +53,7 @@ module.exports = class Contenidos {
   obtener (id) {
     db.consulta('select * from contenidos where id = ? limit 1', [id]).then(resultado => {
       if (resultado.length > 0) {
-        respuestas.responder(200, resultado[0], this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, resultado[0], this.res)
       } else {
         modError.responderError(404, this.msj.elConteNoExiste, this.res)
       }
@@ -64,7 +64,7 @@ module.exports = class Contenidos {
     let datos = this.verificarDatos() // Extrae datos del cuerpo de la petición, los sanea y verifica
     if (datos) {
       db.consulta('insert into contenidos set ?', datos).then(() => {
-        respuestas.responder(200, { url: urlApi + datos.id }, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, { url: urlApi + datos.id }, this.res)
         global.cmsCache = {} // Purga cache
       }).catch(error => {
         if (error.errno === 1062) {
@@ -80,7 +80,7 @@ module.exports = class Contenidos {
     let datos = this.verificarDatos() // Extrae datos del cuerpo de la petición, los sanea y verifica
     if (datos) {
       db.consulta('update contenidos set ? where id = ? limit 1', [ datos, idOriginal ]).then(() => {
-        respuestas.responder(200, { url: urlApi + datos.id }, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, { url: urlApi + datos.id }, this.res)
         global.cmsCache = {} // Purga cache
       }).catch(() => { modError.responderError(500, this.msj.noPudoActualiConte, this.res) })
     }
@@ -89,7 +89,7 @@ module.exports = class Contenidos {
   eliminar (id) {
     id = id.replace(/[^0-9a-z]/gi, '').substr(0, 30) // Sanea
     db.consulta('delete from contenidos where id = ? limit 1', [id]).then(() => {
-      respuestas.responder(204, {}, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(204, {}, this.res)
       global.cmsCache = {} // Purga cache
     }).catch(() => { modError.responderError(500, this.msj.noPudoBorrarConte, this.res) })
   }

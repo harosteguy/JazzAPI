@@ -62,11 +62,11 @@ module.exports = (req, res) => {
   let contenido = mCache.obtener(idContenido)
   if (contenido.disponible) {
     // contenido.datos.cache = 1;
-    respuestas.responder(200, contenido.datos, req.headers['accept-encoding'], res) // Responde la petición desde cache
+    respuestas.responder(200, contenido.datos, res) // Responde la petición desde cache
   } else {
     leerContenidosDb(chorro, idioma).then(contenidos => { // Lee base de datos,
       // contenidos.cache = 0;
-      respuestas.responder(200, contenidos, req.headers['accept-encoding'], res) // responde y
+      respuestas.responder(200, contenidos, res) // responde y
       mCache.cachear(idContenido, contenidos).catch(error => { // cachea
         modError.logError(error.name + ' ' + error.message + '\n' + error.stack)
       })

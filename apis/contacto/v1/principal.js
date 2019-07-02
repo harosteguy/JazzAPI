@@ -97,7 +97,7 @@ module.exports = (req, res) => {
   }
   // Envía correo con el objeto transporte
   transporte.sendMail(correo).then(info => {
-    respuestas.responder(200, { respuesta: msj.mensajeEnviado }, req.headers['accept-encoding'], res)
+    respuestas.responder(200, { respuesta: msj.mensajeEnviado }, res)
     // Vista previa disponible cuando se envía a travéz de una cuenta Ethereal
     // console.log('URL de vista previa: %s', nodemailer.getTestMessageUrl(info));
   }).catch(error => {

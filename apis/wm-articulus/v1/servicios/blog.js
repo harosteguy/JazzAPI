@@ -92,7 +92,7 @@ module.exports = class Blog {
       for (let i = 0, tot = resultado.length; i < tot; i++) {
         blogs.push(resultado[i])
       }
-      respuestas.responder(200, blogs, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, blogs, this.res)
     }).catch(error => { modError.manejarError(error, this.msj.errRecupeDatos, this.res) })
   }
 
@@ -105,7 +105,7 @@ module.exports = class Blog {
     consulta += 'from blog_blogs where nombreUrl = ? limit 1'
     db.consulta(consulta, [nombreBase]).then(resultado => {
       if (resultado.length === 1) {
-        respuestas.responder(200, resultado[0], this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, resultado[0], this.res)
       } else {
         throw new modError.ErrorEstado(this.msj.elBlogNoExiste, 404)
       }
@@ -119,7 +119,7 @@ module.exports = class Blog {
       return db.consulta('insert into blog_blogs set ?', datos)
     }).then(() => {
       utiles.limpiarCache()
-      respuestas.responder(200, { url: urlApi + 'blogs/' + datos.nombreUrl }, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, { url: urlApi + 'blogs/' + datos.nombreUrl }, this.res)
     }).catch(error => {
       if (error.errno === 1062) modError.responderError(409, this.msj.elBlogYaExiste, this.res)
       else modError.manejarError(error, this.msj.problemaCreandoBlog, this.res)
@@ -134,7 +134,7 @@ module.exports = class Blog {
     }).then(resUpdate => {
       if (resUpdate.affectedRows === 1) {
         utiles.limpiarCache()
-        respuestas.responder(200, { url: urlApi + 'blogs/' + datos.nombreUrl }, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, { url: urlApi + 'blogs/' + datos.nombreUrl }, this.res)
       } else {
         throw new modError.ErrorEstado(this.msj.elBlogNoExiste, 404)
       }
@@ -146,7 +146,7 @@ module.exports = class Blog {
     db.consulta('delete from blog_blogs where nombreUrl = ? limit 1', [nombreUrl]).then(resultado => {
       if (resultado.affectedRows === 1) {
         utiles.limpiarCache()
-        respuestas.responder(204, {}, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(204, {}, this.res)
       } else {
         throw new modError.ErrorEstado(this.msj.elBlogNoExiste, 404)
       }

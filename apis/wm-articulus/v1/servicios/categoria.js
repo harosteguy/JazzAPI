@@ -84,7 +84,7 @@ module.exports = class Categoria {
       for (let i = 0, tot = resCat.length; i < tot; i++) {
         categorias.push(resCat[i])
       }
-      respuestas.responder(200, categorias, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, categorias, this.res)
     }).catch(error => { modError.manejarError(error, this.msj.errRecupeDatos, this.res) })
   }
 
@@ -98,7 +98,7 @@ module.exports = class Categoria {
       consulta += 'from blog_categorias where idBlog = ? and nombreBase = ? limit 1'
       return db.consulta(consulta, [ idBlog, catBase ])
     }).then(resCat => {
-      if (resCat.length === 1) respuestas.responder(200, resCat[0], this.req.headers['accept-encoding'], this.res)
+      if (resCat.length === 1) respuestas.responder(200, resCat[0], this.res)
       else throw new modError.ErrorEstado(this.msj.laCatNoExiste, 404)
     }).catch(error => { modError.manejarError(error, this.msj.errRecupeDatos, this.res) })
   }
@@ -115,7 +115,7 @@ module.exports = class Categoria {
     }).then(() => {
       utiles.limpiarCache()
       let urlCat = urlApi + 'blogs/' + blogBase + '/categorias/' + oCat.nombreBase
-      respuestas.responder(200, { url: urlCat }, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, { url: urlCat }, this.res)
     }).catch(error => {
       if (error.errno === 1062) modError.responderError(409, this.msj.laCatYaExiste, this.res)
       else modError.manejarError(error, this.msj.problemaCreandoCat, this.res)
@@ -134,7 +134,7 @@ module.exports = class Categoria {
       if (resUpdate.affectedRows === 1) {
         utiles.limpiarCache()
         let urlCat = urlApi + 'blogs/' + blogBase + '/categorias/' + oCat.nombreBase
-        respuestas.responder(200, { url: urlCat }, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, { url: urlCat }, this.res)
       } else {
         throw new modError.ErrorEstado(this.msj.laCatNoExiste, 404)
       }
@@ -156,7 +156,7 @@ module.exports = class Categoria {
       if (resDelete.affectedRows === 1) {
         utiles.limpiarCache()
         this.borrarImagenes(blogBase, idCat).catch(error => { modError.logError(error) })
-        respuestas.responder(204, {}, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(204, {}, this.res)
       } else {
         throw new modError.ErrorEstado(this.msj.laCatNoExiste, 404)
       }

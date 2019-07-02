@@ -112,7 +112,7 @@ module.exports = class Articulo {
         respuesta.aux.categorias.push(resListaCat[i])
       }
       //
-      respuestas.responder(200, respuesta, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, respuesta, this.res)
       //
     }).catch(error => { modError.manejarError(error, this.msj.errRecupeDatos, this.res) })
   }
@@ -213,7 +213,7 @@ module.exports = class Articulo {
                   ? urlApi + 'blogs/' + blogBase + '/articulos?pag=' + (pag + 1) + filtros
                   : ''
                 //
-                respuestas.responder(200, respuesta, this.req.headers['accept-encoding'], this.res)
+                respuestas.responder(200, respuesta, this.res)
               }
             })
           }
@@ -250,7 +250,7 @@ module.exports = class Articulo {
       }).then(() => {
         utiles.limpiarCache()
         let urlArti = urlApi + 'blogs/' + blogBase + '/articulos/' + tituloUrl
-        respuestas.responder(200, { url: urlArti }, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, { url: urlArti }, this.res)
       }).catch(error => {
         if (error.errno === 1062) modError.responderError(409, this.msj.elArticuloYaExiste, this.res)
         else modError.manejarError(error, this.msj.errorCreandoArticulo, this.res)
@@ -292,7 +292,7 @@ module.exports = class Articulo {
     }).then(() => {
       utiles.limpiarCache()
       let urlArti = urlApi + 'blogs/' + blogBase + '/articulos/' + tituloUrl
-      respuestas.responder(200, { url: urlArti }, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, { url: urlArti }, this.res)
     }).catch(error => { modError.manejarError(error, this.msj.errorActualiArticulo, this.res) })
   }
 
@@ -314,7 +314,7 @@ module.exports = class Articulo {
     }).then(resDelete => {
       utiles.limpiarCache()
       this.borrarImagenes(blogBase, idArti).catch(error => { modError.logError(error) })
-      respuestas.responder(204, {}, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(204, {}, this.res)
     }).catch(error => { modError.manejarError(error, this.msj.errorBorrandoArticulo, this.res) })
   }
 

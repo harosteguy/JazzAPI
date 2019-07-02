@@ -106,9 +106,9 @@ module.exports = class Imagen {
         array[i] = urlBase + archivo
       })
       //
-      respuestas.responder(200, archivos, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, archivos, this.res)
     }).catch(error => {
-      if (error.code === 'ENOENT') respuestas.responder(200, [], this.req.headers['accept-encoding'], this.res) // No hay carpeta con imágenes
+      if (error.code === 'ENOENT') respuestas.responder(200, [], this.res) // No hay carpeta con imágenes
       else modError.manejarError(error, this.msj.errRecupeDatos, this.res)
     })
   }
@@ -157,7 +157,7 @@ module.exports = class Imagen {
         throw new modError.ErrorEstado(this.msj.debeSerJpgPng, 400)
       }
     }).then(() => {
-      respuestas.responder(200, { url: oRuta.url + nombreArchivo + '.' + extArchivo }, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, { url: oRuta.url + nombreArchivo + '.' + extArchivo }, this.res)
       // Elimina archivo temporal
       fs.unlink('tmp/' + archivo.nombreTmp, (error) => {
         if (error) modError.logError(JSON.stringify(error))
@@ -201,10 +201,10 @@ module.exports = class Imagen {
           }
         })
       })
-      respuestas.responder(204, {}, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(204, {}, this.res)
     }).catch(error => {
       if (error.code === 'ENOENT') { // Si la carpeta no existe
-        respuestas.responder(204, {}, this.req.headers['accept-encoding'], this.res) // se dan por borrados los archivos
+        respuestas.responder(204, {}, this.res) // se dan por borrados los archivos
       } else {
         modError.manejarError(error, this.msj.errorBorrandoSetImg, this.res)
       }

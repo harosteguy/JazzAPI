@@ -52,7 +52,7 @@ module.exports = class Comentarios {
     order by fecha`
     db.consulta(consulta, [ artiBase, blogBase ])
       .then(res => {
-        respuestas.responder(200, this.ordenarComentarios(res), this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, this.ordenarComentarios(res), this.res)
       })
       .catch(error => {
         modError.manejarError(error, this.msj.errRecupeDatos, this.res)
@@ -98,7 +98,7 @@ module.exports = class Comentarios {
       })
       .then(res => {
         // Devuelve el comentario guardado
-        respuestas.responder(200, res[0], this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, res[0], this.res)
       })
       .catch(error => {
         if (error.estado) {

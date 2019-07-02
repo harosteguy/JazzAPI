@@ -43,7 +43,7 @@ let manejarError = (error, textoAlt, res) => {
 
 let responderError = (estado, texto, res) => {
   estado = estado || 500
-  respuestas.responder(estado, { error: texto }, '', res)
+  respuestas.responder(estado, { error: texto }, res)
 }
 
 let logError = (texto) => {

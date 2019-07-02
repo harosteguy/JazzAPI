@@ -43,11 +43,11 @@ module.exports = class Blog {
       if (contenido.disponible) {
         // Responde petición desde cache
         // contenido.datos.cache = 1;
-        respuestas.responder(200, contenido.datos, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, contenido.datos, this.res)
       } else {
         this.listar().then(respuesta => {
           // respuesta.cache = 0;
-          respuestas.responder(200, respuesta, this.req.headers['accept-encoding'], this.res)
+          respuestas.responder(200, respuesta, this.res)
           mCache.cachear(idContenido, respuesta).catch(error => {
             modError.logError(error.name + ' ' + error.message + '\n' + error.stack)
           })

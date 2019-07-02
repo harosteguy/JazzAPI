@@ -85,7 +85,7 @@ module.exports = class Usuario {
           apellido: resul[0].apellido,
           esAdmin: resul[0].esAdmin
         }
-        respuestas.responder(200, cuerpoResp, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, cuerpoResp, this.res)
       }).catch(error => {
         modError.manejarError(error, this.msj.usrNoAutori, this.res)
       })
@@ -94,7 +94,7 @@ module.exports = class Usuario {
   // Verifica ID y token de usuario
   autorizacion () {
     this.usrOk().then(usr => {
-      respuestas.responder(200, usr, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, usr, this.res)
     }).catch(error => {
       modError.manejarError(error, this.msj.usrNoAutori, this.res)
     })
@@ -126,7 +126,7 @@ module.exports = class Usuario {
             apellido: resul[0].apellido,
             email: resul[0].email
           }
-          respuestas.responder(200, usr, this.req.headers['accept-encoding'], this.res) // Responde datos del usuario en credenciales
+          respuestas.responder(200, usr, this.res) // Responde datos del usuario en credenciales
           return []
         }
       }).then(resul => {
@@ -139,7 +139,7 @@ module.exports = class Usuario {
           apellido: resul[0].apellido,
           email: resul[0].email
         }
-        respuestas.responder(200, usr, this.req.headers['accept-encoding'], this.res) // Responde datos del usuario del email
+        respuestas.responder(200, usr, this.res) // Responde datos del usuario del email
       }).catch(error => {
         modError.manejarError(error, this.msj.errRecupeDatos, this.res)
       })
@@ -208,7 +208,7 @@ module.exports = class Usuario {
       // Envía correo con el objeto transporte
       return transporte.sendMail(correo)
     }).then(info => {
-      respuestas.responder(200, { nombre: usr.nombre, apellido: usr.apellido, email: usr.email }, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, { nombre: usr.nombre, apellido: usr.apellido, email: usr.email }, this.res)
       // Vista previa disponible cuando se envía a travéz de una cuenta Ethereal
       // console.log('URL de vista previa: %s', nodemailer.getTestMessageUrl(info))
     }).catch(error => {
@@ -249,14 +249,14 @@ module.exports = class Usuario {
           .catch(() => { modError.logError('Error eliminando pre-registro.') })
         // Devuelve datos de usuario
         let respuesta = { uid: resul.insertId, token: usr.token, nombre: usr.nombre, apellido: usr.apellido }
-        respuestas.responder(200, respuesta, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, respuesta, this.res)
       }).catch(error => {
         modError.manejarError(error, this.msj.errRegistrando, this.res)
       })
   }
 
   actualizar () {
-    respuestas.responder(200, { abc: 'def' }, this.req.headers['accept-encoding'], this.res)
+    respuestas.responder(200, { abc: 'def' }, this.res)
   }
 
   imagen () {
@@ -276,7 +276,7 @@ module.exports = class Usuario {
       let archivoNuevo = conf.dirBaseImagen + 'usuarios/' + nombreArchivo
       return this.imagenRedim('tmp/' + archivo.nombreTmp, archivoNuevo, 260, 260)
     }).then(() => {
-      respuestas.responder(200, { url: conf.urlBaseImagen + 'usuarios/' + nombreArchivo }, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, { url: conf.urlBaseImagen + 'usuarios/' + nombreArchivo }, this.res)
       // Elimina archivo temporal
       fs.unlink('tmp/' + archivo.nombreTmp, (error) => {
         if (error) modError.logError(JSON.stringify(error))
@@ -368,7 +368,7 @@ module.exports = class Usuario {
         // Envía correo con el objeto transporte
         return transporte.sendMail(correo)
       }).then(info => {
-        respuestas.responder(200, { mensaje: this.msj.teEnviamosInstrucciones }, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, { mensaje: this.msj.teEnviamosInstrucciones }, this.res)
         // Vista previa disponible cuando se envía a travéz de una cuenta Ethereal
         // console.log('URL de vista previa: %s', nodemailer.getTestMessageUrl(info));
       }).catch(error => {
@@ -416,14 +416,14 @@ module.exports = class Usuario {
         return this.crearToken(usr.id)
       }).then(token => {
         usr.token = token
-        respuestas.responder(200, usr, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, usr, this.res)
       }).catch(error => {
         modError.manejarError(error, this.msj.errorDesconocido, this.res)
       })
   }
 
   eliminar () {
-    respuestas.responder(200, { abc: 'def' }, this.req.headers['accept-encoding'], this.res)
+    respuestas.responder(200, { abc: 'def' }, this.res)
   }
 
   // ------

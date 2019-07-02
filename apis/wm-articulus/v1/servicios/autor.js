@@ -72,9 +72,9 @@ module.exports = class Autor {
     let consulta = 'select activo from blog_autores where uid = ? limit 1'
     db.consulta(consulta, [ this.usr.id ]).then(autor => {
       if (autor.length === 1 && autor[0].activo === 1) {
-        respuestas.responder(200, { autorActivo: true }, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, { autorActivo: true }, this.res)
       } else {
-        respuestas.responder(200, { autorActivo: false }, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, { autorActivo: false }, this.res)
       }
     }).catch(error => {
       modError.manejarError(error, this.msj.errServidorVerLog, this.res)
@@ -112,7 +112,7 @@ module.exports = class Autor {
       }
 
       let aAutores = Object.keys(oAutores).map((clave) => oAutores[ clave ]) // Convierte en array para respuesta
-      respuestas.responder(200, aAutores, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, aAutores, this.res)
     }).catch(error => { modError.manejarError(error, this.msj.errRecupeDatos, this.res) })
   }
 
@@ -136,7 +136,7 @@ module.exports = class Autor {
         }
         db.consulta('insert into blog_autor_blogs (uid, idBlog) values ?', [aAutorBlog])
       }
-      respuestas.responder(201, {}, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(201, {}, this.res)
       utiles.limpiarCache()
     }).catch(error => {
       if (error.errno === 1062) modError.responderError(409, this.msj.elAutorYaExiste, this.res)
@@ -173,7 +173,7 @@ module.exports = class Autor {
         while ((blog = blogs.shift())) {
           oAutor.blogs.push(blog.idBlog)
         }
-        respuestas.responder(200, oAutor, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(200, oAutor, this.res)
       }).catch(error => { modError.manejarError(error, this.msj.errRecupeDatos, this.res) })
   }
 
@@ -213,7 +213,7 @@ module.exports = class Autor {
       }
     }).then(() => {
       utiles.limpiarCache()
-      respuestas.responder(200, {}, this.req.headers['accept-encoding'], this.res)
+      respuestas.responder(200, {}, this.res)
     }).catch(error => { modError.manejarError(error, this.msj.problemaActualiAutor, this.res) })
   }
 
@@ -222,7 +222,7 @@ module.exports = class Autor {
     db.consulta('delete from blog_autores where uid = ? limit 1', [ uid ]).then(resultado => {
       if (resultado.affectedRows === 1) {
         utiles.limpiarCache()
-        respuestas.responder(204, {}, this.req.headers['accept-encoding'], this.res)
+        respuestas.responder(204, {}, this.res)
       } else {
         throw new modError.ErrorEstado(this.msj.elAutorNoExiste, 404)
       }

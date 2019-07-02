@@ -19,7 +19,7 @@
  */
 
 let http = require('http')
-
+let conf = require('./config')
 let modError = require('./error')
 
 module.exports = req => {
@@ -28,7 +28,7 @@ module.exports = req => {
     if (req.headers.authorization) {
       const opciones = {
         hostname: 'localhost',
-        port: 6666,
+        port: conf.puertoHttp,
         path: '/apis/usuarios/v1/autorizacion',
         method: 'GET',
         headers: {

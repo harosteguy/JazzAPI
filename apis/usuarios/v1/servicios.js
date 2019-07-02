@@ -22,7 +22,7 @@
 
 let conf = require('../../apis-comun/config')
 let BaseDatos = require('../../apis-comun/base-datos')
-let db = new BaseDatos(conf.dbHost, conf.dbUser, conf.dbPass, 'jazz_usuarios')
+let db = new BaseDatos(conf.dbHost, conf.dbUser, conf.dbPass, conf.dbPrefijo + '_usuarios')
 let crypto = require('crypto')
 let fs = require('fs')
 let respuestas = require('../../apis-comun/respuestas')

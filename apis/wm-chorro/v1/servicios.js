@@ -22,7 +22,7 @@
 
 let conf = require('../../apis-comun/config')
 let BaseDatos = require('../../apis-comun/base-datos')
-let db = new BaseDatos(conf.dbHost, conf.dbUserWm, conf.dbPassWm, 'jazz_chorro')
+let db = new BaseDatos(conf.dbHost, conf.dbUserWm, conf.dbPassWm, conf.dbPrefijo + '_chorro')
 let respuestas = require('../../apis-comun/respuestas')
 let modError = require('../../apis-comun/error')
 let sanitizeHtml = require('sanitize-html')

@@ -22,7 +22,7 @@
 
 let conf = require('../../../apis-comun/config')
 let BaseDatos = require('../../../apis-comun/base-datos')
-let db = new BaseDatos(conf.dbHost, conf.dbUserWm, conf.dbPassWm, 'jazz_articulus')
+let db = new BaseDatos(conf.dbHost, conf.dbUserWm, conf.dbPassWm, conf.dbPrefijo + '_articulus')
 let utiles = require('../comun/utiles')
 let respuestas = require('../../../apis-comun/respuestas')
 let modError = require('../../../apis-comun/error')

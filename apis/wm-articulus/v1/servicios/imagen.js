@@ -22,7 +22,7 @@
 
 let conf = require('../../../apis-comun/config')
 let BaseDatos = require('../../../apis-comun/base-datos')
-let db = new BaseDatos(conf.dbHost, conf.dbUserWm, conf.dbPassWm, 'jazz_articulus')
+let db = new BaseDatos(conf.dbHost, conf.dbUserWm, conf.dbPassWm, conf.dbPrefijo + '_articulus')
 let fs = require('fs')
 let mkdirp = require('mkdirp')
 let utiles = require('../comun/utiles')

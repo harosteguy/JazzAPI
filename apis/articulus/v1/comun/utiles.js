@@ -22,7 +22,7 @@
 
 let conf = require('../../../apis-comun/config')
 let BaseDatos = require('../../../apis-comun/base-datos')
-let db = new BaseDatos(conf.dbHost, conf.dbUser, conf.dbPass, 'jazz_articulus')
+let db = new BaseDatos(conf.dbHost, conf.dbUser, conf.dbPass, conf.dbPrefijo + '_articulus')
 
 module.exports = {
   obtenerIdBlog (blogBase) {

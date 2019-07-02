@@ -22,7 +22,7 @@
 
 var conf = require('../../../apis-comun/config')
 var BaseDatos = require('../../../apis-comun/base-datos')
-var db = new BaseDatos(conf.dbHost, conf.dbUser, conf.dbPass, 'jazz_articulus')
+var db = new BaseDatos(conf.dbHost, conf.dbUser, conf.dbPass, conf.dbPrefijo + '_articulus')
 var mCache = require('../../../apis-comun/cache-mem')
 var utiles = require('../comun/utiles')
 var respuestas = require('../../../apis-comun/respuestas')

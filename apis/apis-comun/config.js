@@ -34,6 +34,8 @@ module.exports = {
   // Usuario MySQL para tareas de gestión
   dbUserWm: 'jazz_wm',
   dbPassWm: 'Contraseña de webmaster aquí',
+  // Prefijo para nombre de bases de datos
+  dbPrefijo: 'jazz',
   // Puerto donde se sirven las APIs
   puertoHttp: 6666,
   // Cantidad de artículos en las respuestas de la API Articulus

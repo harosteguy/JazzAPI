@@ -20,13 +20,13 @@
 
 'use strict'
 
-var conf = require('../../../apis-comun/config')
-var BaseDatos = require('../../../apis-comun/base-datos')
-var db = new BaseDatos(conf.dbHost, conf.dbUser, conf.dbPass, conf.dbPrefijo + '_articulus')
-var mCache = require('../../../apis-comun/cache-mem')
-var utiles = require('../comun/utiles')
-var respuestas = require('../../../apis-comun/respuestas')
-var modError = require('../../../apis-comun/error')
+let conf = require('../../../apis-comun/config')
+let BaseDatos = require('../../../apis-comun/base-datos')
+let db = new BaseDatos(conf.dbHost, conf.dbUser, conf.dbPass, conf.dbPrefijo + '_articulus')
+let mCache = require('../../../apis-comun/cache-mem')
+let utiles = require('../comun/utiles')
+let respuestas = require('../../../apis-comun/respuestas')
+let modError = require('../../../apis-comun/error')
 
 module.exports = class Categoria {
   constructor (req, res) {

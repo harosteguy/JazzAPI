@@ -112,11 +112,7 @@ http.createServer((req, res) => {
     req.on('data', fragmento => {
       // cuerpo += fragmento.toString();
       cuerpo += fragmento
-      /// /
-      // PENDIENTE
-      // Controlar tamaño máximo del cuerpo de la petición.
-      // Va a memoria así que se puede agotar.
-      // De éste control se puede encargar un proxy inverso
+      // Aquí debería controlarse el tamaño máximo del cuerpo de la petición si no lo hace un proxy
     })
   }
 

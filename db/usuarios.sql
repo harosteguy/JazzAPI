@@ -11,3 +11,7 @@ GRANT USAGE ON *.* TO 'jazz_wm'@'localhost';
 GRANT SELECT, INSERT, UPDATE, DELETE ON `jazz\_chorro`.* TO 'jazz_wm'@'localhost';
 GRANT SELECT, INSERT, UPDATE, DELETE ON `jazz\_articulus`.* TO 'jazz_wm'@'localhost';
 GRANT SELECT, INSERT, UPDATE ON `jazz\_usuarios`.* TO 'jazz_wm'@'localhost';
+
+-- Usuario para crear el pool de conexiones
+CREATE USER 'sinPrivilegios'@'localhost' IDENTIFIED WITH mysql_native_password AS '***';
+

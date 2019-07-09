@@ -20,23 +20,38 @@
 
 let mysql = require('mysql')
 
+let pool = mysql.createPool({ // Pool con usuario foo fuera de module.exports para que sea cacheado
+  connectionLimit: 80,
+  host: 'localhost',
+  user: 'sinPrivilegios',
+  password: 'h6$gIj6821qb',
+  dateStrings: true
+})
+
 module.exports = class BaseDatos {
   constructor (dbHost, dbUser, dbPass, dbDatabase) {
-    this.pool = mysql.createPool({
-      connectionLimit: 100,
-      host: dbHost,
+    // this.dbHost = dbHost
+    this.usrDb = {
       user: dbUser,
       password: dbPass,
-      database: dbDatabase,
-      dateStrings: true
-    })
+      database: dbDatabase
+    }
   }
 
   conexion () {
     return new Promise((resolve, reject) => {
-      this.pool.getConnection((error, conexion) => {
-        if (error) reject(error)
-        else resolve(conexion)
+      pool.getConnection((error, conexion) => {
+        if (error) {
+          reject(error)
+        } else {
+          conexion.changeUser(this.usrDb, error => {
+            if (error) {
+              reject(error)
+              return
+            }
+            resolve(conexion)
+          })
+        }
       })
     })
   }

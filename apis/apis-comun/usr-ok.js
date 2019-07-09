@@ -17,9 +17,56 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+/*
+// Versión para producción usando https
+
+let https = require('https')
+let modError = require('./error')
+
+module.exports = req => {
+  // Verifica credenciales con la API de usuario
+  return new Promise((resolve, reject) => {
+    if (req.headers.authorization) {
+      const opciones = {
+        host: req.headers.host,
+        path: '/apis/usuarios/v1/autorizacion',
+        method: 'GET',
+        headers: {
+          'Authorization': req.headers.authorization,
+          'User-Agent': 'API WM-Articulus'
+        }
+      }
+      https.request(opciones, respuesta => {
+        let cuerpo = ''
+        respuesta.on('data', (fragmento) => { cuerpo += fragmento })
+        respuesta.on('end', () => {
+          try {
+            const usuario = JSON.parse(cuerpo)
+            if (usuario.error) {
+              reject(new modError.ErrorEstado('Usuario no autorizado.', 403))
+            } else {
+              resolve(usuario)
+            }
+          } catch (error) {
+            modError.logError(`Error catch de JSON.parse(cuerpo) verificando usuario en /apis/apis-comun/usr-ok.js.\n${error}`)
+            reject(new modError.ErrorEstado('Usuario no autorizado.', 403))
+          }
+        })
+      }).on('error', error => {
+        modError.logError(`Error en la petición para verificar usuario en /apis/apis-comun/usr-ok.js\n${error}`)
+        reject(new modError.ErrorEstado('Usuario no autorizado.', 403))
+      })
+    } else {
+      reject(new modError.ErrorEstado('Usuario no autorizado.', 403))
+    }
+  })
+}
+*/
+
+// Versión para entorno de desarrollo donde el código de arriba falla por el certificado autofirmado
+// Esta versión también funcionaría en producción, solo hay que usar para la petición el mismo puerto que se indica en el archivo de configuración
 
 let http = require('http')
-let conf = require('./config')
 let modError = require('./error')
 
 module.exports = req => {
@@ -28,7 +75,7 @@ module.exports = req => {
     if (req.headers.authorization) {
       const opciones = {
         hostname: 'localhost',
-        port: conf.puertoHttp,
+        port: 6666,
         path: '/apis/usuarios/v1/autorizacion',
         method: 'GET',
         headers: {
@@ -48,10 +95,12 @@ module.exports = req => {
               resolve(usuario)
             }
           } catch (error) {
+            modError.logError(`Error catch de JSON.parse(cuerpo) verificando usuario en /apis/apis-comun/usr-ok.js.\n${error}`)
             reject(new modError.ErrorEstado('Usuario no autorizado.', 403))
           }
         })
       }).on('error', error => {
+        modError.logError(`Error en la petición para verificar usuario en /apis/apis-comun/usr-ok.js\n${error}`)
         reject(new modError.ErrorEstado('Usuario no autorizado.', 403))
       })
     } else {

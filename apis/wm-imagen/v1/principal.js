@@ -243,7 +243,10 @@ class Imagen {
             modError.logError(JSON.stringify(error))
             return resolve(false)
           }
-          return resolve(true)
+          fs.chmod(archivoNuevo, '644', error => {
+            if (error) modError.logError('Error setendo permisos de archivo a la imagen en /apis/wm-imagen/v1/principal.js\n' + error)
+            return resolve(true)
+          })
         })
       })
     }

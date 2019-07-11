@@ -532,7 +532,10 @@ module.exports = class Usuario {
           reject(error)
           return
         }
-        resolve()
+        fs.chmod(archivoNuevo, '644', error => {
+          if (error) modError.logError('Error setendo permisos de archivo a la imagen en /apis/usuarios/v1/servicios.js\n' + error)
+          return resolve(true)
+        })
       })
     })
   }

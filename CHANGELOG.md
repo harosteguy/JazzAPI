@@ -1,5 +1,21 @@
 # JazzAPI - Registro de cambios
 
+## v1.2.1 (2019-07-11)
+
+#### Agregados
+
+- Mejora en el log de errores.
+- Mejora en la seguridad de la carga de imágenes.
+- Mejora en el pool de conexiones a bases de datos.
+- Se le da una vigencia desde la última actividad al token de usuario.
+
+#### Correcciones
+- Correcciones menores.
+
+#### Seguridad
+
+- Se actualiza la versión de una dependencia vulnerable.
+
 ## v1.2.0 (2019-06-23)
 
 #### Agregados

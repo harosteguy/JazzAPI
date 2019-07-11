@@ -101,7 +101,7 @@ module.exports = (req, res) => {
         } catch (err) { cuerpo = false }
         if (cuerpo) {
           require('fs').unlink('tmp/' + cuerpo.archivo.nombreTmp, error => {
-            if (error) modError.logError(JSON.stringify(error))
+            if (error) modError.logError(error)
           })
         }
       }

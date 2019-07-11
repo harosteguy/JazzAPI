@@ -170,13 +170,13 @@ class Imagen {
       respuestas.responder(200, { url: oRuta.url + nombreArchivo + '.' + extArchivo }, this.res)
       // Elimina archivo temporal
       fs.unlink('tmp/' + archivo.nombreTmp, (error) => {
-        if (error) modError.logError(JSON.stringify(error))
+        if (error) modError.logError(error)
       })
     }).catch(error => {
       modError.manejarError(error, this.msj.errorCreandoSetImg, this.res)
       // Elimina archivo temporal
       fs.unlink('tmp/' + archivo.nombreTmp, (error) => {
-        if (error) modError.logError(JSON.stringify(error))
+        if (error) modError.logError(error)
       })
     })
   }
@@ -206,7 +206,7 @@ class Imagen {
         conf.setDeImagenes.forEach(infoImg => {
           if (archivo === nomArchivo + infoImg.sufijo + extArchivo) {
             fs.unlink(oRuta.dir + archivo, error => {
-              if (error) modError.logError(JSON.stringify(error))
+              if (error) modError.logError(error)
             })
           }
         })
@@ -240,7 +240,7 @@ class Imagen {
       return new Promise((resolve, reject) => {
         exec(cl, (error, stdout, stderr) => {
           if (error) {
-            modError.logError(JSON.stringify(error))
+            modError.logError(error)
             return resolve(false)
           }
           fs.chmod(archivoNuevo, '644', error => {

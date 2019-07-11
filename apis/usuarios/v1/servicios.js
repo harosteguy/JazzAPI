@@ -279,7 +279,7 @@ module.exports = class Usuario {
       respuestas.responder(200, { url: conf.urlBaseImagen + 'usuarios/' + nombreArchivo }, this.res)
       // Elimina archivo temporal
       fs.unlink('tmp/' + archivo.nombreTmp, (error) => {
-        if (error) modError.logError(JSON.stringify(error))
+        if (error) modError.logError(error)
       })
     }).catch(error => {
       modError.manejarError(error, this.msj.usrNoAutori, this.res)
@@ -528,7 +528,7 @@ module.exports = class Usuario {
     return new Promise((resolve, reject) => {
       exec(cl, (error, stdout, stderr) => {
         if (error) {
-          modError.logError(JSON.stringify(error))
+          modError.logError(error)
           reject(error)
           return
         }

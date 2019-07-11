@@ -471,11 +471,11 @@ module.exports = class Articulo {
         let contador = archivos.length
         archivos.forEach(archivo => {
           fs.unlink(carpetaImagenes + archivo, error => {
-            if (error) modError.logError(JSON.stringify(error))
+            if (error) modError.logError(error)
             contador--
             if (contador === 0) { // Si se eliminó la última imagen
               fs.rmdir(carpetaImagenes, error => { // se elimina la carpeta
-                if (error) modError.logError(JSON.stringify(error))
+                if (error) modError.logError(error)
               })
               resolve(true)
             }

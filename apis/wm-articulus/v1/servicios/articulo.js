@@ -323,7 +323,7 @@ module.exports = class Articulo {
   obtenerAutor (uid) {
     return new Promise((resolve, reject) => {
       let autor
-      let consulta = 'select nombreAutor, activo from blog_autores where uid = ? limit 1'
+      let consulta = 'select uid, nombreAutor, activo from blog_autores where uid = ? limit 1'
       db.consulta(consulta, [ uid ]).then(resAutor => {
         if ((autor = resAutor[0])) {
           return db.consulta('select idBlog from blog_autor_blogs where uid = ?', [ uid ]) // Blogs del autor

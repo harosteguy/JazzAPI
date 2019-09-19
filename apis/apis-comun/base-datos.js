@@ -24,7 +24,7 @@ let pool = mysql.createPool({ // Pool con usuario foo fuera de module.exports pa
   connectionLimit: 80,
   host: 'localhost',
   user: 'sinPrivilegios',
-  password: 'h6$gIj6821qb',
+  password: 'Contraseña de usuario sinPrivilegios aquí',
   dateStrings: true
 })
 

@@ -711,7 +711,7 @@ curl http://localhost:6666/apis/articulus/v1/blogs
 }
 ```
 
-Obtener un blogs.
+Obtener un blog.
 ```
 curl http://localhost:6666/apis/articulus/v1/blogs/seccion-demo
 ```

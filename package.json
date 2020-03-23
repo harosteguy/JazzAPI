@@ -1,6 +1,6 @@
 {
   "name": "jazzapi",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "JazzAPIs es un grupo de APIs RESTful desarrolladas en Node.js para servir y manejar contenidos de aplicaciones.",
   "main": "index.js",
   "scripts": {

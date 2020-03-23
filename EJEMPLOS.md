@@ -711,6 +711,18 @@ curl http://localhost:6666/apis/articulus/v1/blogs
 }
 ```
 
+Obtener un blogs.
+```
+curl http://localhost:6666/apis/articulus/v1/blogs/seccion-demo
+```
+```javascript
+{
+	"nombre":"Sección Demo",
+	"nombreUrl":"seccion-demo",
+	"descripcion":"Esta es la Sección Demo"
+	}
+```
+
 Obtener lista de categorías de un blog.
 ```
 curl http://localhost:6666/apis/articulus/v1/blogs/seccion-demo/categorias

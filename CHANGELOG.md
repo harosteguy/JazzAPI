@@ -1,5 +1,18 @@
 # JazzAPI - Registro de cambios
 
+## v1.3.0 (2020-03-23)
+
+#### Agregados
+- Servicio para obtener información de un blog en la API Articulus.
+
+#### Correcciones
+
+- Corrección de permiso de autor para editar y borrar
+
+#### Seguridad
+
+- Se actualizan las dependencias.
+
 ## v1.2.1 (2019-07-11)
 
 #### Agregados
@@ -10,6 +23,7 @@
 - Se le da una vigencia desde la última actividad al token de usuario.
 
 #### Correcciones
+
 - Correcciones menores.
 
 #### Seguridad

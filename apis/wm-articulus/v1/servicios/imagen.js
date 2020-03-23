@@ -115,14 +115,9 @@ module.exports = class Imagen {
 
   crear (aRuta) {
     let archivo, oRuta, cuerpo, nombreArchivo, extArchivo
-    this.obtenerRutaImagen(aRuta).then((ruta) => { // Obtiene ruta completa donde se guardará la imagen y URL
+    this.obtenerRutaImagen(aRuta).then(ruta => { // Obtiene ruta completa donde se guardará la imagen y URL
       oRuta = ruta
-      return new Promise((resolve, reject) => {
-        mkdirp(oRuta.dir, error => { // Crea carpetas necesarias
-          if (error) reject(error)
-          else resolve(true)
-        })
-      })
+      return mkdirp(oRuta.dir) // Crea carpetas necesarias
     }).then(() => {
       try {
         cuerpo = JSON.parse(this.req.cuerpo) // Obtiene info del archivo

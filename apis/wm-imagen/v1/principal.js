@@ -126,12 +126,7 @@ class Imagen {
     let archivo, oRuta, nombreArchivo, extArchivo
     Promise.resolve({ dir: conf.dirBaseImagen + aRuta[4] + '/', url: conf.urlBaseImagen + aRuta[4] + '/' }).then(ruta => {
       oRuta = ruta
-      return new Promise((resolve, reject) => {
-        mkdirp(oRuta.dir, error => { // Crea carpetas necesarias
-          if (error) reject(error)
-          else resolve(true)
-        })
-      })
+      return mkdirp(oRuta.dir) // Crea carpetas necesarias
     }).then(() => {
       let cuerpo
       try {

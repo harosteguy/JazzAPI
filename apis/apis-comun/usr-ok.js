@@ -36,7 +36,7 @@ module.exports = req => {
           'User-Agent': 'API WM-Articulus'
         }
       }
-      https.request(opciones, respuesta => {
+      https.get(opciones, respuesta => {
         let cuerpo = ''
         respuesta.on('data', (fragmento) => { cuerpo += fragmento })
         respuesta.on('end', () => {

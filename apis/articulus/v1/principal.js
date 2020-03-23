@@ -34,8 +34,9 @@ module.exports = (req, res) => {
   let aRuta = ruta.split('/')
 
   if (aRuta[4] === 'blogs') {
-    if (!aRuta[5]) {
+    if (!aRuta[6]) {
       // /apis/articulus/v1/blogs
+      // /apis/articulus/v1/blogs/<nombreBaseBlog>
       let Blog = require('./servicios/blogs')
 
       let blog = new Blog(req, res)

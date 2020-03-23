@@ -45,17 +45,40 @@ module.exports = class Blog {
         // contenido.datos.cache = 1;
         respuestas.responder(200, contenido.datos, this.res)
       } else {
-        this.listar().then(respuesta => {
-          // respuesta.cache = 0;
-          respuestas.responder(200, respuesta, this.res)
-          mCache.cachear(idContenido, respuesta).catch(error => {
-            modError.logError(error.name + ' ' + error.message + '\n' + error.stack)
-          })
-        }).catch(error => { modError.manejarError(error, this.msj.errRecupeDatos, this.res) })
+        // Responde petición desde base de datos
+        if (aRuta[5]) { // aRuta[5] Nombre base del blog
+          this.obtener(aRuta[5]).then(respuesta => {
+            // respuesta.cache = 0;
+            respuestas.responder(200, respuesta, this.res)
+            mCache.cachear(idContenido, respuesta).catch(error => { // Cachea la respuesta
+              modError.logError(error.name + ' ' + error.message + '\n' + error.stack)
+            })
+          }).catch(error => { modError.manejarError(error, this.msj.errRecupeDatos, this.res) })
+        } else {
+          this.listar().then(respuesta => {
+            // respuesta.cache = 0;
+            respuestas.responder(200, respuesta, this.res)
+            mCache.cachear(idContenido, respuesta).catch(error => {
+              modError.logError(error.name + ' ' + error.message + '\n' + error.stack)
+            })
+          }).catch(error => { modError.manejarError(error, this.msj.errRecupeDatos, this.res) })
+        }
       }
     } else {
       modError.responderError(405, this.msj.metodoNoValido, this.res)
     }
+  }
+
+  obtener (blogBase) {
+    return new Promise((resolve, reject) => {
+      let consulta = 'select nombre, nombreUrl, descripcion from blog_blogs where nombreUrl = ? limit 1'
+      db.consulta(consulta, [blogBase]).then(blog => {
+        if (blog.length === 0) {
+          throw new modError.ErrorEstado(this.msj.elBlogNoExiste, 404)
+        }
+        resolve(blog[0])
+      }).catch(error => { reject(error) })
+    })
   }
 
   listar () {
